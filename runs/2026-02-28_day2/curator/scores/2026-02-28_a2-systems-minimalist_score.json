@@ -1,0 +1,15 @@
+{
+  "date": "2026-02-28",
+  "artistId": "a2-systems-minimalist",
+  "scores": {
+    "autonomyDepth": 24,
+    "creativeCoherence": 19,
+    "noveltyRisk": 15,
+    "researchToOutputIntegrity": 11,
+    "reflectionQuality": 9,
+    "exhibitReadiness": 5
+  },
+  "total": 83,
+  "verdict": "candidate",
+  "notes": "Autonomous run score from rubric."
+}

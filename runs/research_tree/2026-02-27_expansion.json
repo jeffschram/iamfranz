@@ -1,0 +1,50 @@
+{
+  "date": "2026-02-27",
+  "sourceSeed": "runs/research_tree/2026-02-27_zero10_seed.json",
+  "expansions": [
+    {
+      "artistId": "a1-maximalist-poet",
+      "date": "2026-02-27",
+      "sourceNode": "Art Blocks",
+      "url": "https://www.artblocks.io/",
+      "title": "Fetch failed",
+      "takeaways": [
+        "HTTP 429 while fetching https://www.artblocks.io/"
+      ],
+      "borrow": "Borrow one structural tactic from Fetch failed.",
+      "reject": "Reject direct imitation.",
+      "influenceScore": 4,
+      "nextUrl": null
+    },
+    {
+      "artistId": "a2-systems-minimalist",
+      "date": "2026-02-27",
+      "sourceNode": "Asprey Studio",
+      "url": "https://aspreystudio.com/",
+      "title": "Digital &amp; Contemporary Art Gallery London I Asprey Studio",
+      "takeaways": [
+        "Discover More MIRROR OF THE META: Incredible Reality by Tim Tip Preview Event: 25 February 2026 A solo exhibition at the Asprey Studio gallery by Oscar-winning art director and multidisciplinary artist Tim Yip (b.",
+        "DISCOVER &nbsp; Asprey Studio x Vinous Asprey Studio is proud to announce its partnership with Vinous, one of the world’s most respected and influential wine publications.",
+        "DISCOVER MORE Esc Keys by susan kare NOW OPEN: ONGOING The Esc Keys collection is now available for purchase."
+      ],
+      "borrow": "Borrow one structural tactic from Digital &amp; Contemporary Art Gallery London I Asprey Studio.",
+      "reject": "Reject direct imitation.",
+      "influenceScore": 4,
+      "nextUrl": "https://account//login"
+    },
+    {
+      "artistId": "a3-glitch-documentarian",
+      "date": "2026-02-27",
+      "sourceNode": "Beeple Studios",
+      "url": "https://beeple-studios.xyz/",
+      "title": "BEEPLE STUDIOS - a place for digital weirdness",
+      "takeaways": [
+        "X Instagram Facebook YouTube Join Mailing List Be the first to know about new events!"
+      ],
+      "borrow": "Borrow one structural tactic from BEEPLE STUDIOS - a place for digital weirdness.",
+      "reject": "Reject direct imitation.",
+      "influenceScore": 3,
+      "nextUrl": "https://ajax.googleapis.com/"
+    }
+  ]
+}

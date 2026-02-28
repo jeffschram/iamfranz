@@ -1,0 +1,12 @@
+{
+  "pilotId": "iamfranz-autonomy-v1",
+  "day": 1,
+  "date": "2026-02-27",
+  "mode": "autonomous",
+  "humanInterventionRequired": false,
+  "artists": [
+    "a1-maximalist-poet",
+    "a2-systems-minimalist",
+    "a3-glitch-documentarian"
+  ]
+}

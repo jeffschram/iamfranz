@@ -1,0 +1,22 @@
+{
+  "byArtist": {
+    "a1-maximalist-poet": {
+      "currentUrl": "https://www.artblocks.io/",
+      "nextUrl": "https://www.artblocks.io/",
+      "lastTitle": "Fetch failed",
+      "lastRunDate": "2026-02-28"
+    },
+    "a2-systems-minimalist": {
+      "currentUrl": "https://aspreystudio.com/",
+      "nextUrl": "https://aspreystudio.com/",
+      "lastTitle": "Digital &amp; Contemporary Art Gallery London I Asprey Studio",
+      "lastRunDate": "2026-02-28"
+    },
+    "a3-glitch-documentarian": {
+      "currentUrl": "https://beeple-studios.xyz/",
+      "nextUrl": "https://beeple-studios.xyz/",
+      "lastTitle": "BEEPLE STUDIOS - a place for digital weirdness",
+      "lastRunDate": "2026-02-28"
+    }
+  }
+}
