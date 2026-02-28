@@ -1,0 +1,22 @@
+{
+  "date": "2026-02-27",
+  "runId": "run-1772232739337",
+  "count": 3,
+  "items": [
+    {
+      "artistId": "a2-systems-minimalist",
+      "finalOutput": "artists/a2-systems-minimalist/outputs/2026-02-27_a2-systems-minimalist_final.png",
+      "total": 83
+    },
+    {
+      "artistId": "a3-glitch-documentarian",
+      "finalOutput": "artists/a3-glitch-documentarian/outputs/2026-02-27_a3-glitch-documentarian_final.png",
+      "total": 80
+    },
+    {
+      "artistId": "a1-maximalist-poet",
+      "finalOutput": "artists/a1-maximalist-poet/outputs/2026-02-27_a1-maximalist-poet_final.png",
+      "total": 77
+    }
+  ]
+}

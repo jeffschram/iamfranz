@@ -1,0 +1,17 @@
+{
+  "artistId": "a3-glitch-documentarian",
+  "date": "2026-02-28",
+  "status": "artifacts-generated",
+  "expectedArtifacts": [
+    "artists/a3-glitch-documentarian/outputs/2026-02-28_a3-glitch-documentarian_iter1.png",
+    "artists/a3-glitch-documentarian/outputs/2026-02-28_a3-glitch-documentarian_iter2.png",
+    "artists/a3-glitch-documentarian/outputs/2026-02-28_a3-glitch-documentarian_iter3.png",
+    "artists/a3-glitch-documentarian/outputs/2026-02-28_a3-glitch-documentarian_iter4.png",
+    "artists/a3-glitch-documentarian/outputs/2026-02-28_a3-glitch-documentarian_final.png"
+  ],
+  "model": "gpt-image-1",
+  "generation": {
+    "generateImages": true,
+    "successfulIterations": 1
+  }
+}

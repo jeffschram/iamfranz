@@ -1,0 +1,15 @@
+{
+  "date": "{{date}}",
+  "artistId": "{{artist_id}}",
+  "scores": {
+    "autonomyDepth": 0,
+    "creativeCoherence": 0,
+    "noveltyRisk": 0,
+    "researchToOutputIntegrity": 0,
+    "reflectionQuality": 0,
+    "exhibitReadiness": 0
+  },
+  "total": 0,
+  "verdict": "hold",
+  "notes": ""
+}

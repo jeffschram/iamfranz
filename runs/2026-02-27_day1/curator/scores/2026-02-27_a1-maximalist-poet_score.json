@@ -1,0 +1,15 @@
+{
+  "date": "2026-02-27",
+  "artistId": "a1-maximalist-poet",
+  "scores": {
+    "autonomyDepth": 23,
+    "creativeCoherence": 18,
+    "noveltyRisk": 14,
+    "researchToOutputIntegrity": 10,
+    "reflectionQuality": 8,
+    "exhibitReadiness": 4
+  },
+  "total": 77,
+  "verdict": "candidate",
+  "notes": "Autonomous run score from rubric."
+}

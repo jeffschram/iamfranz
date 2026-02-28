@@ -1,0 +1,17 @@
+{
+  "artistId": "a1-maximalist-poet",
+  "date": "2026-02-28",
+  "status": "artifacts-generated",
+  "expectedArtifacts": [
+    "artists/a1-maximalist-poet/outputs/2026-02-28_a1-maximalist-poet_iter1.png",
+    "artists/a1-maximalist-poet/outputs/2026-02-28_a1-maximalist-poet_iter2.png",
+    "artists/a1-maximalist-poet/outputs/2026-02-28_a1-maximalist-poet_iter3.png",
+    "artists/a1-maximalist-poet/outputs/2026-02-28_a1-maximalist-poet_iter4.png",
+    "artists/a1-maximalist-poet/outputs/2026-02-28_a1-maximalist-poet_final.png"
+  ],
+  "model": "gpt-image-1",
+  "generation": {
+    "generateImages": true,
+    "successfulIterations": 4
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-02-28",
+  "artistId": "a3-glitch-documentarian",
+  "scores": {
+    "autonomyDepth": 25,
+    "creativeCoherence": 14,
+    "noveltyRisk": 16,
+    "researchToOutputIntegrity": 12,
+    "reflectionQuality": 10,
+    "exhibitReadiness": 3
+  },
+  "total": 80,
+  "verdict": "candidate",
+  "notes": "Autonomous run score from rubric."
+}

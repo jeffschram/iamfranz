@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ArtistDayRecord",
+  "type": "object",
+  "required": ["date", "artistId", "intent", "inspiration", "method", "iterations", "finalOutput"],
+  "properties": {
+    "date": { "type": "string" },
+    "artistId": { "type": "string" },
+    "intent": { "type": "string" },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "inspiration": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "takeaway"],
+        "properties": {
+          "source": { "type": "string" },
+          "takeaway": { "type": "string" }
+        }
+      }
+    },
+    "method": { "type": "string" },
+    "iterations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "summary": { "type": "string" },
+          "outputPath": { "type": "string" }
+        }
+      }
+    },
+    "selfCritique": {
+      "type": "object",
+      "properties": {
+        "coherence": { "type": "number" },
+        "novelty": { "type": "number" },
+        "emotionalImpact": { "type": "number" },
+        "notes": { "type": "string" }
+      }
+    },
+    "finalOutput": {
+      "type": "object",
+      "required": ["path", "rationale"],
+      "properties": {
+        "path": { "type": "string" },
+        "rationale": { "type": "string" }
+      }
+    }
+  }
+}
