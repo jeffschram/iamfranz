@@ -1,0 +1,14 @@
+{
+  "artistId": "riker",
+  "date": "2026-02-28",
+  "status": "generation-disabled",
+  "expectedArtifacts": [
+    "artists/riker/outputs/2026-02-28_11-06-00_riker_final.png",
+    "artists/riker/outputs/2026-02-28_11-06-00_riker_final.png"
+  ],
+  "model": "gpt-image-1",
+  "generation": {
+    "generateImages": false,
+    "successfulIterations": 0
+  }
+}

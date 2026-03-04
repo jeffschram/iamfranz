@@ -1,0 +1,14 @@
+{
+  "artistId": "milo",
+  "date": "2026-02-28",
+  "status": "generation-disabled",
+  "expectedArtifacts": [
+    "artists/milo/outputs/2026-02-28_11-06-00_milo_final.png",
+    "artists/milo/outputs/2026-02-28_11-06-00_milo_final.png"
+  ],
+  "model": "gpt-image-1",
+  "generation": {
+    "generateImages": false,
+    "successfulIterations": 0
+  }
+}

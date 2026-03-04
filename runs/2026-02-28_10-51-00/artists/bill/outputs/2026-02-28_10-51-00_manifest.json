@@ -1,0 +1,17 @@
+{
+  "artistId": "bill",
+  "date": "2026-02-28",
+  "status": "artifacts-generated",
+  "expectedArtifacts": [
+    "artists/bill/outputs/2026-02-28_10-51-00_bill_iter1.png",
+    "artists/bill/outputs/2026-02-28_10-51-00_bill_iter2.png",
+    "artists/bill/outputs/2026-02-28_10-51-00_bill_iter3.png",
+    "artists/bill/outputs/2026-02-28_10-51-00_bill_iter4.png",
+    "artists/bill/outputs/2026-02-28_10-51-00_bill_final.png"
+  ],
+  "model": "gpt-image-1",
+  "generation": {
+    "generateImages": true,
+    "successfulIterations": 0
+  }
+}

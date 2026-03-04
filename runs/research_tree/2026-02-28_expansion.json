@@ -3,23 +3,9 @@
   "sourceSeed": "runs/research_tree/2026-02-27_zero10_seed.json",
   "expansions": [
     {
-      "artistId": "a1-maximalist-poet",
+      "artistId": "riker",
       "date": "2026-02-28",
       "sourceNode": "Asprey Studio",
-      "url": "https://www.artblocks.io/",
-      "title": "Fetch failed",
-      "takeaways": [
-        "HTTP 429 while fetching https://www.artblocks.io/"
-      ],
-      "borrow": "Borrow one structural tactic from Fetch failed.",
-      "reject": "Reject direct imitation.",
-      "influenceScore": 4,
-      "nextUrl": null
-    },
-    {
-      "artistId": "a2-systems-minimalist",
-      "date": "2026-02-28",
-      "sourceNode": "Beeple Studios",
       "url": "https://aspreystudio.com/",
       "title": "Digital &amp; Contemporary Art Gallery London I Asprey Studio",
       "takeaways": [
@@ -29,13 +15,13 @@
       ],
       "borrow": "Borrow one structural tactic from Digital &amp; Contemporary Art Gallery London I Asprey Studio.",
       "reject": "Reject direct imitation.",
-      "influenceScore": 4,
+      "influenceScore": 3,
       "nextUrl": "https://aspreystudio.com/"
     },
     {
-      "artistId": "a3-glitch-documentarian",
+      "artistId": "bill",
       "date": "2026-02-28",
-      "sourceNode": "bitforms gallery",
+      "sourceNode": "Beeple Studios",
       "url": "https://beeple-studios.xyz/",
       "title": "BEEPLE STUDIOS - a place for digital weirdness",
       "takeaways": [
@@ -43,8 +29,24 @@
       ],
       "borrow": "Borrow one structural tactic from BEEPLE STUDIOS - a place for digital weirdness.",
       "reject": "Reject direct imitation.",
-      "influenceScore": 3,
+      "influenceScore": 5,
       "nextUrl": "https://beeple-studios.xyz/"
+    },
+    {
+      "artistId": "milo",
+      "date": "2026-02-28",
+      "sourceNode": "bitforms gallery",
+      "url": "https://www.bitforms.art/",
+      "title": "Home - bitforms gallery",
+      "takeaways": [
+        "Austin, TX 78712 In Run the Code, contemporary artists harness algorithms and generative AI models to create powerful, thought-provoking works that explore nature, art history, internet culture, and human behavior.",
+        "Showcasing highlights from the Thoma Foundation’s Digital and Media Art Collection, this immersive exhibition transforms digital information into sensory works of art.",
+        "The exhibition traces Monaghan’s interplay of art history and technology to explore desire, anxieties, and power in the digital age."
+      ],
+      "borrow": "Borrow one structural tactic from Home - bitforms gallery.",
+      "reject": "Reject direct imitation.",
+      "influenceScore": 5,
+      "nextUrl": "https://www.bitforms.art/wp-content/themes/bitforms-2024/siteData.json.gz?v=1772232156"
     }
   ]
 }

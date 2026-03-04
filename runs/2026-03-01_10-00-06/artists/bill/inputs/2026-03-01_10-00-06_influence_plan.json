@@ -1,0 +1,72 @@
+{
+  "runId": "2026-03-01_10-00-06",
+  "artistId": "bill",
+  "plan": {
+    "adopt": [
+      {
+        "id": "ref-color-contradiction",
+        "title": "Color Contradiction Studies",
+        "tags": [
+          "color",
+          "tension",
+          "emotion"
+        ],
+        "techniques": [
+          "dual-palette opposition"
+        ],
+        "concepts": [
+          "emotional dissonance"
+        ],
+        "visualCues": [
+          "warm/cool collision",
+          "muted counterweight"
+        ]
+      },
+      {
+        "id": "ref-theater-lighting",
+        "title": "Theatrical Lighting Grammars",
+        "tags": [
+          "lighting",
+          "drama",
+          "focus"
+        ],
+        "techniques": [
+          "single-source emphasis",
+          "shadow carve"
+        ],
+        "concepts": [
+          "attention as staging"
+        ],
+        "visualCues": [
+          "hard spotlight",
+          "deep peripheral shadow"
+        ]
+      }
+    ],
+    "resist": {
+      "id": "ref-noise-as-trace",
+      "title": "Noise as Documentary Trace",
+      "tags": [
+        "signal",
+        "documentary",
+        "glitch"
+      ]
+    },
+    "breakConstraint": "flat lighting"
+  },
+  "experiment": {
+    "arc": {
+      "name": "Broken Protocols",
+      "step": 3,
+      "length": 4
+    },
+    "hypothesis": "If bill applies dual-palette opposition + single-source emphasis; avoid drifting into Noise as Documentary Trace while breaking 'flat lighting', the piece will increase novelty without losing coherence.",
+    "successCriteria": [
+      "Visual anchor is clear within 2 seconds.",
+      "At least one compositional choice visibly departs from prior habit.",
+      "Concept is specific, not generic mood."
+    ],
+    "noveltyDirective": "change one major visual strategy while preserving emotional signature",
+    "promptIntent": "Arc \"Broken Protocols\" step 3/4"
+  }
+}

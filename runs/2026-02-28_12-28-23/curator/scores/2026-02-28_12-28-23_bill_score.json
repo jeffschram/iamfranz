@@ -1,0 +1,16 @@
+{
+  "runId": "2026-02-28_12-28-23",
+  "date": "2026-02-28",
+  "artistId": "bill",
+  "scores": {
+    "autonomyDepth": 24,
+    "creativeCoherence": 17,
+    "noveltyRisk": 14,
+    "researchToOutputIntegrity": 13,
+    "reflectionQuality": 8,
+    "exhibitReadiness": 4
+  },
+  "total": 80,
+  "verdict": "candidate",
+  "notes": "Autonomous run score from rubric with evolution controls."
+}

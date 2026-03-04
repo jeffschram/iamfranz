@@ -10,7 +10,9 @@
     "build": "vite build",
     "lint": "tsc -p convex -noEmit --pretty false && tsc -p . -noEmit --pretty false && convex dev --once && vite build",
     "pilot:run-day": "node scripts/runAutonomyDay.mjs --dayDir runs/2026-02-27_day1 --date 2026-02-27",
-    "pilot:sync-convex": "node scripts/syncPilotToConvex.mjs --date 2026-02-27 --dayDir runs/2026-02-27_day1"
+    "pilot:sync-convex": "node scripts/syncPilotToConvex.mjs --date 2026-02-27 --dayDir runs/2026-02-27_day1",
+    "pilot:run-now": "node scripts/runPilotNow.mjs",
+    "pilot:run-now:google": "IAMFRANZ_IMAGE_PROVIDER=google node scripts/runPilotNow.mjs"
   },
   "dependencies": {
     "@convex-dev/auth": "^0.0.80",

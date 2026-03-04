@@ -1,0 +1,22 @@
+{
+  "runId": "2026-02-28_12-28-23",
+  "date": "2026-02-28",
+  "count": 3,
+  "items": [
+    {
+      "artistId": "milo",
+      "finalOutput": "artists/milo/outputs/2026-02-28_12-28-23_milo_final.png",
+      "total": 86
+    },
+    {
+      "artistId": "riker",
+      "finalOutput": "artists/riker/outputs/2026-02-28_12-28-23_riker_final.png",
+      "total": 81
+    },
+    {
+      "artistId": "bill",
+      "finalOutput": "artists/bill/outputs/2026-02-28_12-28-23_bill_final.png",
+      "total": 80
+    }
+  ]
+}
