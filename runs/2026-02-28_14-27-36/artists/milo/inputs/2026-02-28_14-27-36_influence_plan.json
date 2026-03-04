@@ -1,0 +1,73 @@
+{
+  "runId": "2026-02-28_14-27-36",
+  "artistId": "milo",
+  "plan": {
+    "adopt": [
+      {
+        "id": "ref-memory-palaces",
+        "title": "Memory Palaces and Spatial Recall",
+        "tags": [
+          "memory",
+          "space",
+          "structure"
+        ],
+        "techniques": [
+          "layered depth",
+          "symbolic architecture"
+        ],
+        "concepts": [
+          "memory as navigable space"
+        ],
+        "visualCues": [
+          "foreground thresholds",
+          "repeating corridors"
+        ]
+      },
+      {
+        "id": "ref-japanese-ma",
+        "title": "Ma: Negative Space as Meaning",
+        "tags": [
+          "minimalism",
+          "space",
+          "silence"
+        ],
+        "techniques": [
+          "aggressive subtraction",
+          "breathing room"
+        ],
+        "concepts": [
+          "absence as active force"
+        ],
+        "visualCues": [
+          "large negative fields",
+          "single weighted anchor"
+        ]
+      }
+    ],
+    "resist": {
+      "id": "ref-color-contradiction",
+      "title": "Color Contradiction Studies",
+      "tags": [
+        "color",
+        "tension",
+        "emotion"
+      ]
+    },
+    "breakConstraint": "over-literal symbolism"
+  },
+  "experiment": {
+    "arc": {
+      "name": "Ghost Archives",
+      "step": 2,
+      "length": 4
+    },
+    "hypothesis": "If milo applies layered depth + aggressive subtraction; avoid drifting into Color Contradiction Studies while breaking 'over-literal symbolism', the piece will increase novelty without losing coherence.",
+    "successCriteria": [
+      "Visual anchor is clear within 2 seconds.",
+      "At least one compositional choice visibly departs from prior habit.",
+      "Concept is specific, not generic mood."
+    ],
+    "noveltyDirective": "change one major visual strategy while preserving emotional signature",
+    "promptIntent": "Arc \"Ghost Archives\" step 2/4"
+  }
+}

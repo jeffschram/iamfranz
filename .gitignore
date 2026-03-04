@@ -7,9 +7,31 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies / builds
 node_modules
 dist
 dist-ssr
+
+# Local env + secrets
+.env
+.env.*
+!.env.example
+
+# Local-only runtime artifacts (autonomous runs, generated media, research trails)
+runs/20*_day*/
+runs/research_tree/
+
+# Keep editable agent config + contracts in repo
+!runs/agent-contract-v1.md
+!runs/agents/
+!runs/agents/**
+!runs/orchestrator.md
+!runs/templates/
+!runs/templates/**
+!runs/README.md
+
+# Temporary / archive
+_archive/
 *.local
 
 # Editor directories and files
@@ -22,6 +44,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Ignored for the template, you probably want to remove it:
-package-lock.json

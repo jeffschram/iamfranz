@@ -1,0 +1,69 @@
+{
+  "date": "2026-02-28",
+  "artistId": "riker",
+  "intent": "Explore \"Digital collage + painterly texture\" to express tension between machine autonomy and human longing.",
+  "constraints": [
+    "high color tension",
+    "human-scale metaphor",
+    "one fractured focal subject"
+  ],
+  "inspiration": [
+    {
+      "source": "Constructivism + digital folklore",
+      "takeaway": "balance structure with narrative residue"
+    },
+    {
+      "source": "Systems art critiques",
+      "takeaway": "show process scars, not just clean output"
+    },
+    {
+      "source": "Digital &amp; Contemporary Art Gallery London I Asprey Studio",
+      "takeaway": "Discover More MIRROR OF THE META: Incredible Reality by Tim Tip Preview Event: 25 February 2026 A solo exhibition at the Asprey Studio gallery by Oscar-winning art director and multidisciplinary artist Tim Yip (b."
+    }
+  ],
+  "researchTrail": [
+    {
+      "date": "2026-02-28",
+      "sourceNode": "Asprey Studio",
+      "url": "https://aspreystudio.com/",
+      "title": "Digital &amp; Contemporary Art Gallery London I Asprey Studio",
+      "takeaways": [
+        "Discover More MIRROR OF THE META: Incredible Reality by Tim Tip Preview Event: 25 February 2026 A solo exhibition at the Asprey Studio gallery by Oscar-winning art director and multidisciplinary artist Tim Yip (b.",
+        "DISCOVER &nbsp; Asprey Studio x Vinous Asprey Studio is proud to announce its partnership with Vinous, one of the world’s most respected and influential wine publications.",
+        "DISCOVER MORE Esc Keys by susan kare NOW OPEN: ONGOING The Esc Keys collection is now available for purchase."
+      ],
+      "borrow": "Borrow one structural tactic from Digital &amp; Contemporary Art Gallery London I Asprey Studio.",
+      "reject": "Reject direct imitation.",
+      "influenceScore": 3,
+      "nextUrl": "https://aspreystudio.com/"
+    }
+  ],
+  "method": "Single-pass generation with self-critique on the final output.",
+  "iterations": [
+    {
+      "id": "riker-iter-1",
+      "summary": "Single-pass generation (no intermediate iterations).",
+      "outputPath": "artists/riker/outputs/2026-02-28_11-35-00_riker_final.png",
+      "imageResult": {
+        "ok": false,
+        "mode": "skipped",
+        "model": null
+      }
+    }
+  ],
+  "selfCritique": {
+    "coherence": 7,
+    "novelty": 8,
+    "emotionalImpact": 8,
+    "notes": "Selected version with strongest visual thesis and least derivative structure."
+  },
+  "finalOutput": {
+    "path": "artists/riker/outputs/2026-02-28_11-35-00_riker_final.png",
+    "rationale": "Best balance of concept clarity and stylistic identity under constraints.",
+    "imageResult": {
+      "ok": false,
+      "mode": "skipped",
+      "model": null
+    }
+  }
+}

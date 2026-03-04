@@ -22,7 +22,7 @@ export function ArtworkDetail() {
           {artwork.imageUrl ? (
             <img
               src={artwork.imageUrl}
-              alt={artwork.title}
+              alt={artwork.pieceTitle ?? artwork.title}
               className="w-full h-full object-cover"
             />
           ) : (
@@ -34,7 +34,7 @@ export function ArtworkDetail() {
 
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl font-bold text-black mb-2">{artwork.title}</h1>
+            <h1 className="text-3xl font-bold text-black mb-2">{artwork.pieceTitle ?? artwork.title}</h1>
             <Link
               to={`/artist/${artwork.artistId}`}
               className="text-lg text-gray-600 hover:text-black transition-colors"
@@ -48,6 +48,56 @@ export function ArtworkDetail() {
               <h3 className="font-semibold text-black mb-2">Description</h3>
               <p className="text-gray-600 leading-relaxed">{artwork.description}</p>
             </div>
+
+
+            {(artwork.artistThinking || artwork.inspirationNote) && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-black mb-1">What the Artist Was Thinking</h3>
+                {artwork.artistThinking && (
+                  <p className="text-gray-700 leading-relaxed">{artwork.artistThinking}</p>
+                )}
+                {artwork.inspirationNote && (
+                  <p className="text-sm text-gray-600 leading-relaxed"><span className="font-medium text-gray-700">Inspiration:</span> {artwork.inspirationNote}</p>
+                )}
+              </div>
+            )}
+
+
+            {(artwork.researchSourceTitle || artwork.researchSourceUrl || artwork.learningTechnique || artwork.learningConcept || artwork.learningVisual) && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-black mb-1">Research & Learnings</h3>
+                {(artwork.researchSourceTitle || artwork.researchSourceUrl) && (
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    <span className="font-medium">Source:</span>{" "}
+                    {artwork.researchSourceUrl ? (
+                      <a href={artwork.researchSourceUrl} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800 underline">
+                        {artwork.researchSourceTitle ?? artwork.researchSourceUrl}
+                      </a>
+                    ) : (
+                      artwork.researchSourceTitle
+                    )}
+                  </p>
+                )}
+                {artwork.learningTechnique && (
+                  <p className="text-sm text-gray-700 leading-relaxed"><span className="font-medium">Technique:</span> {artwork.learningTechnique}</p>
+                )}
+                {artwork.learningConcept && (
+                  <p className="text-sm text-gray-700 leading-relaxed"><span className="font-medium">Concept:</span> {artwork.learningConcept}</p>
+                )}
+                {artwork.learningVisual && (
+                  <p className="text-sm text-gray-700 leading-relaxed"><span className="font-medium">Visual cue:</span> {artwork.learningVisual}</p>
+                )}
+              </div>
+            )}
+
+            {artwork.prompt && (
+              <div>
+                <h3 className="font-semibold text-black mb-2">Generation Prompt</h3>
+                <pre className="text-xs sm:text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-md p-3 whitespace-pre-wrap break-words">
+{artwork.prompt}
+                </pre>
+              </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>

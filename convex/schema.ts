@@ -56,11 +56,20 @@ const applicationTables = {
 
   artworks: defineTable({
     title: v.string(),
+    pieceTitle: v.optional(v.string()),
     description: v.string(),
     artistId: v.id("artists"),
     imageId: v.id("_storage"),
     year: v.number(),
     medium: v.string(),
+    prompt: v.optional(v.string()),
+    artistThinking: v.optional(v.string()),
+    inspirationNote: v.optional(v.string()),
+    researchSourceTitle: v.optional(v.string()),
+    researchSourceUrl: v.optional(v.string()),
+    learningTechnique: v.optional(v.string()),
+    learningConcept: v.optional(v.string()),
+    learningVisual: v.optional(v.string()),
     dimensions: v.optional(v.string()),
     price: v.optional(v.number()),
     isAvailable: v.boolean(),
@@ -73,14 +82,31 @@ const applicationTables = {
   artistUpdates: defineTable({
     artistId: v.id("artists"),
     date: v.string(),
+    runId: v.optional(v.string()),
     summary: v.string(),
     interests: v.optional(v.array(v.string())),
     inspiration: v.optional(v.array(v.string())),
     score: v.optional(v.number()),
+
+    pieceTitle: v.optional(v.string()),
+    hypothesis: v.optional(v.string()),
+    experimentOutcome: v.optional(v.string()),
+    arcName: v.optional(v.string()),
+    arcStep: v.optional(v.number()),
+
+    noveltyDelta: v.optional(v.number()),
+    coherence: v.optional(v.number()),
+    risk: v.optional(v.number()),
+
+    adoptedRefs: v.optional(v.array(v.string())),
+    resistedRef: v.optional(v.string()),
+    constraintBroken: v.optional(v.string()),
+
     createdAt: v.number(),
   })
     .index("by_artist", ["artistId"])
-    .index("by_artist_date", ["artistId", "date"]),
+    .index("by_artist_date", ["artistId", "date"])
+    .index("by_artist_run", ["artistId", "runId"]),
 };
 
 export default defineSchema({

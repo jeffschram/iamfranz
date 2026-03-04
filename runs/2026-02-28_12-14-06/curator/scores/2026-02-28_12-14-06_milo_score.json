@@ -1,0 +1,16 @@
+{
+  "runId": "2026-02-28_12-14-06",
+  "date": "2026-02-28",
+  "artistId": "milo",
+  "scores": {
+    "autonomyDepth": 26,
+    "creativeCoherence": 15,
+    "noveltyRisk": 14,
+    "researchToOutputIntegrity": 15,
+    "reflectionQuality": 10,
+    "exhibitReadiness": 4
+  },
+  "total": 84,
+  "verdict": "candidate",
+  "notes": "Autonomous run score from rubric with evolution controls."
+}

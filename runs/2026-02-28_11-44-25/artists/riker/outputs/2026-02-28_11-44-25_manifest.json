@@ -1,0 +1,14 @@
+{
+  "artistId": "riker",
+  "date": "2026-02-28",
+  "status": "artifacts-generated",
+  "expectedArtifacts": [
+    "artists/riker/outputs/2026-02-28_11-44-25_riker_final.png",
+    "artists/riker/outputs/2026-02-28_11-44-25_riker_final.png"
+  ],
+  "model": "gemini-3.1-flash-image-preview",
+  "generation": {
+    "generateImages": true,
+    "successfulIterations": 0
+  }
+}

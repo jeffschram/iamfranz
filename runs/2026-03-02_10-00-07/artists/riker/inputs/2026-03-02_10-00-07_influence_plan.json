@@ -1,0 +1,72 @@
+{
+  "runId": "2026-03-02_10-00-07",
+  "artistId": "riker",
+  "plan": {
+    "adopt": [
+      {
+        "id": "ref-noise-as-trace",
+        "title": "Noise as Documentary Trace",
+        "tags": [
+          "signal",
+          "documentary",
+          "glitch"
+        ],
+        "techniques": [
+          "controlled corruption"
+        ],
+        "concepts": [
+          "evidence vs distortion"
+        ],
+        "visualCues": [
+          "channel separation",
+          "chromatic fracture"
+        ]
+      },
+      {
+        "id": "ref-systems-poetics",
+        "title": "Systems Poetics in Generative Art",
+        "tags": [
+          "systems",
+          "algorithm",
+          "poetic"
+        ],
+        "techniques": [
+          "rule variation",
+          "constraint mutation"
+        ],
+        "concepts": [
+          "poetry through rules"
+        ],
+        "visualCues": [
+          "grid rupture",
+          "iterative motif"
+        ]
+      }
+    ],
+    "resist": {
+      "id": "ref-noise-as-trace",
+      "title": "Noise as Documentary Trace",
+      "tags": [
+        "signal",
+        "documentary",
+        "glitch"
+      ]
+    },
+    "breakConstraint": "strict symmetry"
+  },
+  "experiment": {
+    "arc": {
+      "name": "Cathedrals of Memory",
+      "step": 4,
+      "length": 4
+    },
+    "hypothesis": "If riker applies controlled corruption + rule variation; avoid drifting into Noise as Documentary Trace while breaking 'strict symmetry', the piece will increase novelty without losing coherence.",
+    "successCriteria": [
+      "Visual anchor is clear within 2 seconds.",
+      "At least one compositional choice visibly departs from prior habit.",
+      "Concept is specific, not generic mood."
+    ],
+    "noveltyDirective": "bold departure while preserving one recognizable motif",
+    "promptIntent": "Arc \"Cathedrals of Memory\" step 4/4"
+  }
+}

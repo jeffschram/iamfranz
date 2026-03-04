@@ -1,0 +1,72 @@
+{
+  "runId": "2026-02-28_12-59-27",
+  "artistId": "milo",
+  "plan": {
+    "adopt": [
+      {
+        "id": "ref-noise-as-trace",
+        "title": "Noise as Documentary Trace",
+        "tags": [
+          "signal",
+          "documentary",
+          "glitch"
+        ],
+        "techniques": [
+          "controlled corruption"
+        ],
+        "concepts": [
+          "evidence vs distortion"
+        ],
+        "visualCues": [
+          "channel separation",
+          "chromatic fracture"
+        ]
+      },
+      {
+        "id": "ref-photo-decay",
+        "title": "Photographic Decay and Archive Corruption",
+        "tags": [
+          "archive",
+          "decay",
+          "signal"
+        ],
+        "techniques": [
+          "artifact layering",
+          "noise gradients"
+        ],
+        "concepts": [
+          "truth erosion over time"
+        ],
+        "visualCues": [
+          "burn marks",
+          "scanline drift"
+        ]
+      }
+    ],
+    "resist": {
+      "id": "ref-memory-palaces",
+      "title": "Memory Palaces and Spatial Recall",
+      "tags": [
+        "memory",
+        "space",
+        "structure"
+      ]
+    },
+    "breakConstraint": "flat lighting"
+  },
+  "experiment": {
+    "arc": {
+      "name": "Ghost Archives",
+      "step": 1,
+      "length": 4
+    },
+    "hypothesis": "If milo applies controlled corruption + artifact layering; avoid drifting into Memory Palaces and Spatial Recall while breaking 'flat lighting', the piece will increase novelty without losing coherence.",
+    "successCriteria": [
+      "Visual anchor is clear within 2 seconds.",
+      "At least one compositional choice visibly departs from prior habit.",
+      "Concept is specific, not generic mood."
+    ],
+    "noveltyDirective": "change one major visual strategy while preserving emotional signature",
+    "promptIntent": "Arc \"Ghost Archives\" step 1/4"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "runId": "2026-03-02_10-00-07",
+  "artistId": "milo",
+  "plan": {
+    "adopt": [
+      {
+        "id": "ref-theater-lighting",
+        "title": "Theatrical Lighting Grammars",
+        "tags": [
+          "lighting",
+          "drama",
+          "focus"
+        ],
+        "techniques": [
+          "single-source emphasis",
+          "shadow carve"
+        ],
+        "concepts": [
+          "attention as staging"
+        ],
+        "visualCues": [
+          "hard spotlight",
+          "deep peripheral shadow"
+        ]
+      },
+      {
+        "id": "ref-systems-poetics",
+        "title": "Systems Poetics in Generative Art",
+        "tags": [
+          "systems",
+          "algorithm",
+          "poetic"
+        ],
+        "techniques": [
+          "rule variation",
+          "constraint mutation"
+        ],
+        "concepts": [
+          "poetry through rules"
+        ],
+        "visualCues": [
+          "grid rupture",
+          "iterative motif"
+        ]
+      }
+    ],
+    "resist": {
+      "id": "ref-theater-lighting",
+      "title": "Theatrical Lighting Grammars",
+      "tags": [
+        "lighting",
+        "drama",
+        "focus"
+      ]
+    },
+    "breakConstraint": "over-clean edges"
+  },
+  "experiment": {
+    "arc": {
+      "name": "Ghost Archives",
+      "step": 4,
+      "length": 4
+    },
+    "hypothesis": "If milo applies single-source emphasis + rule variation; avoid drifting into Theatrical Lighting Grammars while breaking 'over-clean edges', the piece will increase novelty without losing coherence.",
+    "successCriteria": [
+      "Visual anchor is clear within 2 seconds.",
+      "At least one compositional choice visibly departs from prior habit.",
+      "Concept is specific, not generic mood."
+    ],
+    "noveltyDirective": "bold departure while preserving one recognizable motif",
+    "promptIntent": "Arc \"Ghost Archives\" step 4/4"
+  }
+}
