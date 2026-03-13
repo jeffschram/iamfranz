@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// LEGACY: retained for reference during repo repurposing.
+// The active IAMFRANZ runtime now lives outside this repo.
 import { execSync } from 'node:child_process';
 
 function nyRunId(d = new Date()) {

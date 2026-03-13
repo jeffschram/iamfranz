@@ -1,3 +1,0 @@
-{"ts":"2026-02-28T17:38:47.264Z","type":"artist_evolution_completed","runId":"2026-02-28_12-38-12","artistId":"riker","total":83,"scoreDelta":2,"researchAccepted":false,"verdict":"candidate"}
-{"ts":"2026-02-28T17:39:09.056Z","type":"artist_evolution_completed","runId":"2026-02-28_12-38-12","artistId":"bill","total":82,"scoreDelta":2,"researchAccepted":false,"verdict":"candidate"}
-{"ts":"2026-02-28T17:39:36.600Z","type":"artist_evolution_completed","runId":"2026-02-28_12-38-12","artistId":"milo","total":80,"scoreDelta":-6,"researchAccepted":true,"verdict":"candidate"}

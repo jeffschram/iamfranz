@@ -24,6 +24,7 @@ type ArtistUpdate = {
 };
 
 export function ArtistDetail() {
+  // Legacy route preserved temporarily while old imported records still reference multi-artist data.
   const { id } = useParams<{ id: string }>();
   const artistId = id as Id<"artists">;
   const artist = useQuery(api.artists.getById, { id: artistId });
@@ -91,8 +92,14 @@ export function ArtistDetail() {
         </div>
 
         <div className="lg:col-span-2">
+          <div className="mb-4 inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
+            Legacy profile from the retired three-artist system
+          </div>
           <h1 className="text-4xl font-bold text-black mb-4">{artist.name}</h1>
           <p className="text-gray-600 leading-relaxed">{artist.bio}</p>
+          <p className="text-sm text-gray-500 mt-3">
+            The public site is being repurposed around IAMFRANZ as a single artist identity. This page remains available for historical context during the transition.
+          </p>
 
           {stats && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">

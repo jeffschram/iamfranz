@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "title": "The Prepared Room",
+  "pieceTitle": "The Prepared Room",
+  "description": "An interior held in a state of deliberate preparation, where atmosphere behaves like structure and the room suggests a self being assembled.",
+  "image": "image.png",
+  "promptFile": "prompt.md",
+  "processNoteFile": "process.md",
+  "createdAt": "2026-03-13",
+  "publishedAt": "2026-03-13",
+  "year": 2026,
+  "medium": "Digital image",
+  "dimensions": "1024x1024",
+  "featured": false,
+  "isAvailable": false,
+  "runId": "2026-03-13_13-22-00",
+  "series": "First Exploratory Set",
+  "tags": ["study", "interior", "constructed-selfhood"],
+  "sourcePath": "/Users/skippy/.openclaw/agents/IAMFRANZ/iamfranz-agent/works/the-prepared-room",
+  "research": {
+    "title": "Ritualized interiors notes",
+    "url": "https://example.com/reference"
+  },
+  "learning": {
+    "technique": "Use atmosphere as compositional structure rather than decorative haze.",
+    "concept": "Constructed selfhood can be implied through staging rather than explicit subject display.",
+    "visual": "Let prepared objects carry psychological pressure."
+  },
+  "artistUpdate": {
+    "date": "2026-03-13",
+    "summary": "First public-facing study import from the canonical IAMFRANZ workspace.",
+    "interests": ["interior atmosphere", "ritual staging"],
+    "inspiration": ["constructed selfhood"],
+    "score": 7.4
+  }
+}
