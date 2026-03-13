@@ -1,0 +1,24 @@
+{
+  "runId": "2026-03-05_14-52-39",
+  "artistId": "milo",
+  "plan": {
+    "adopt": [],
+    "resist": null,
+    "breakConstraint": "flat lighting"
+  },
+  "experiment": {
+    "arc": {
+      "name": "Signal Weather",
+      "step": 4,
+      "length": 4
+    },
+    "hypothesis": "If milo applies structured layering + structured layering; avoid drifting into safe defaults while breaking 'flat lighting', the piece will increase novelty without losing coherence.",
+    "successCriteria": [
+      "Visual anchor is clear within 2 seconds.",
+      "At least one compositional choice visibly departs from prior habit.",
+      "Concept is specific, not generic mood."
+    ],
+    "noveltyDirective": "bold departure while preserving one recognizable motif",
+    "promptIntent": "Arc \"Signal Weather\" step 4/4"
+  }
+}

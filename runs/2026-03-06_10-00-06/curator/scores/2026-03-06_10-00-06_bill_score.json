@@ -1,0 +1,16 @@
+{
+  "runId": "2026-03-06_10-00-06",
+  "date": "2026-03-06",
+  "artistId": "bill",
+  "scores": {
+    "autonomyDepth": 16,
+    "creativeCoherence": 16,
+    "noveltyRisk": 17,
+    "researchToOutputIntegrity": 14,
+    "reflectionQuality": 10,
+    "exhibitReadiness": 5
+  },
+  "total": 78,
+  "verdict": "candidate",
+  "notes": "Intent-match=14"
+}

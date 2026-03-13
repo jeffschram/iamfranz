@@ -16,9 +16,10 @@ export function Artists() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-black mb-4">Our Artists</h1>
+        <p className="text-sm uppercase tracking-[0.2em] text-amber-600 mb-3">Legacy</p>
+        <h1 className="text-4xl font-bold text-black mb-4">Retired artist profiles</h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Meet the talented artists who make up the IAMFRANZ collective.
+          This page is preserved temporarily for legacy imported records from the retired three-artist system. The public site now centers one canonical artist identity: IAMFRANZ.
         </p>
       </div>
 

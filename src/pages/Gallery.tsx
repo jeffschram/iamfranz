@@ -7,90 +7,28 @@ type Artwork = {
   title: string;
   pieceTitle?: string | null;
   imageUrl?: string | null;
-  artist?: { name?: string | null } | null;
-  year?: number;
 };
 
-type RunSection = {
-  runId: string;
-  label: string;
-  sortTs: number;
-  artworks: Artwork[];
-};
+function extractDisplayDate(title: string): string | null {
+  const match = title.match(/^(\d{4}-\d{2}-\d{2})\s+—/);
+  if (!match) return null;
 
-function parseRunIdFromTitle(title: string): string {
-  const parts = title.split(" — ");
-  if (!parts.length) return "legacy";
-  const candidate = parts[0]?.trim() ?? "legacy";
+  const date = new Date(`${match[1]}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return match[1];
 
-  // New format: YYYY-MM-DD_HH-mm-ss
-  if (/^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}$/.test(candidate)) return candidate;
-  // Older date-only format
-  if (/^\d{4}-\d{2}-\d{2}$/.test(candidate)) return candidate;
-
-  return "legacy";
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
 }
 
-function runIdToLabel(runId: string): { label: string; sortTs: number } {
-  const dtMatch = runId.match(/^(\d{4})-(\d{2})-(\d{2})_(\d{2})-(\d{2})-(\d{2})$/);
-  if (dtMatch) {
-    const [, y, m, d, hh, mm, ss] = dtMatch;
-    const iso = `${y}-${m}-${d}T${hh}:${mm}:${ss}`;
-    const date = new Date(iso);
-    const label = new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true,
-    }).format(date);
-    return { label, sortTs: date.getTime() };
-  }
-
-  const dayMatch = runId.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (dayMatch) {
-    const [, y, m, d] = dayMatch;
-    const date = new Date(`${y}-${m}-${d}T00:00:00`);
-    const label = new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    }).format(date);
-    return { label, sortTs: date.getTime() };
-  }
-
-  return { label: "Legacy / Misc", sortTs: 0 };
-}
-
-function groupArtworksByRun(artworks: Artwork[]): RunSection[] {
-  const map = new Map<string, RunSection>();
-
-  for (const artwork of artworks) {
-    const runId = parseRunIdFromTitle(artwork.title ?? "");
-    if (!map.has(runId)) {
-      const meta = runIdToLabel(runId);
-      map.set(runId, {
-        runId,
-        label: meta.label,
-        sortTs: meta.sortTs,
-        artworks: [],
-      });
-    }
-    map.get(runId)!.artworks.push(artwork);
-  }
-
-  return [...map.values()]
-    .sort((a, b) => b.sortTs - a.sortTs)
-    .map((section) => ({
-      ...section,
-      artworks: section.artworks.sort((a, b) => (a.artist?.name ?? "").localeCompare(b.artist?.name ?? "")),
-    }));
+function sortNewestFirst(artworks: Artwork[]): Artwork[] {
+  return [...artworks].sort((a, b) => b.title.localeCompare(a.title));
 }
 
 export function Gallery() {
-  const artworks = useQuery(api.artworks.list);
+  const artworks = useQuery(api.artworks.list) as Artwork[] | undefined;
 
   if (!artworks) {
     return (
@@ -100,53 +38,50 @@ export function Gallery() {
     );
   }
 
-  const sections = groupArtworksByRun(artworks as Artwork[]);
+  const sorted = sortNewestFirst(artworks);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-black mb-4">Art Gallery</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Autonomous runs, grouped by timestamp. Each section captures one run snapshot.
+        <p className="text-xs uppercase tracking-[0.18em] text-gray-500 mb-2">Archive</p>
+        <h1 className="text-3xl font-semibold text-black mb-3">Selected works and studies</h1>
+        <p className="text-base text-gray-600 max-w-2xl mx-auto">
+          A public archive of IAMFRANZ images as the body of work develops over time.
         </p>
       </div>
 
-      {sections.length === 0 ? (
+      {sorted.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500">No artworks available yet.</p>
         </div>
       ) : (
-        <div className="space-y-14">
-          {sections.map((section) => (
-            <section key={section.runId} className="space-y-6">
-              <div className="border-b border-gray-200 pb-3">
-                <h2 className="text-2xl font-semibold text-black">{section.label}</h2>
-                <p className="text-sm text-gray-500 mt-1">Run ID: {section.runId}</p>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {sorted.map((artwork) => {
+            const displayTitle = artwork.pieceTitle ?? artwork.title;
+            const displayDate = extractDisplayDate(artwork.title);
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {section.artworks.map((artwork) => (
-                  <Link key={artwork._id} to={`/artwork/${artwork._id}`} className="group cursor-pointer">
-                    <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
-                      {artwork.imageUrl ? (
-                        <img
-                          src={artwork.imageUrl}
-                          alt={artwork.pieceTitle ?? artwork.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
-                      )}
-                    </div>
-                    <h3 className="font-semibold text-lg text-black group-hover:text-gray-600 transition-colors">
-                      {artwork.artist?.name ?? "Unknown Artist"}
-                    </h3>
-                    <p className="text-sm text-gray-500 truncate">{artwork.pieceTitle ?? artwork.title}</p>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          ))}
+            return (
+              <Link key={artwork._id} to={`/work/${artwork._id}`} className="group cursor-pointer">
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
+                  {artwork.imageUrl ? (
+                    <img
+                      src={artwork.imageUrl}
+                      alt={displayTitle}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
+                  )}
+                </div>
+                <h2 className="font-medium text-base text-black group-hover:text-gray-600 transition-colors">
+                  {displayTitle}
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  {displayDate ? `${displayDate} · ` : ""}IAMFRANZ
+                </p>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>

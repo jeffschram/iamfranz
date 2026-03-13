@@ -1,0 +1,14 @@
+{
+  "runId": "2026-03-05_12-49-23",
+  "date": "2026-03-05",
+  "artistId": "milo",
+  "provider": "google",
+  "model": "gemini-3.1-flash-image-preview",
+  "expectedArtifacts": [
+    "artists/milo/outputs/2026-03-05_12-49-23_milo_final.png"
+  ],
+  "generation": {
+    "generateImages": false,
+    "successfulIterations": 0
+  }
+}

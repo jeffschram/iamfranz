@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// LEGACY: retained from the retired three-artist runtime era.
+// This script should not be treated as the long-term IAMFRANZ public-site publishing path.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';

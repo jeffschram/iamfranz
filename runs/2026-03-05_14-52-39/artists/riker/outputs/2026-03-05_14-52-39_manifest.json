@@ -1,0 +1,14 @@
+{
+  "runId": "2026-03-05_14-52-39",
+  "date": "2026-03-05",
+  "artistId": "riker",
+  "provider": "google",
+  "model": "gemini-3.1-flash-image-preview",
+  "expectedArtifacts": [
+    "artists/riker/outputs/2026-03-05_14-52-39_riker_final.png"
+  ],
+  "generation": {
+    "generateImages": true,
+    "successfulIterations": 1
+  }
+}

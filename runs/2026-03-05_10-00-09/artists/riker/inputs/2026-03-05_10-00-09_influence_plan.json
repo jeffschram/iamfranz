@@ -1,0 +1,24 @@
+{
+  "runId": "2026-03-05_10-00-09",
+  "artistId": "riker",
+  "plan": {
+    "adopt": [],
+    "resist": null,
+    "breakConstraint": "over-clean edges"
+  },
+  "experiment": {
+    "arc": {
+      "name": "Soft Catastrophes",
+      "step": 2,
+      "length": 4
+    },
+    "hypothesis": "If riker applies structured layering + structured layering; avoid drifting into safe defaults while breaking 'over-clean edges', the piece will increase novelty without losing coherence.",
+    "successCriteria": [
+      "Visual anchor is clear within 2 seconds.",
+      "At least one compositional choice visibly departs from prior habit.",
+      "Concept is specific, not generic mood."
+    ],
+    "noveltyDirective": "change one major visual strategy while preserving emotional signature",
+    "promptIntent": "Arc \"Soft Catastrophes\" step 2/4"
+  }
+}

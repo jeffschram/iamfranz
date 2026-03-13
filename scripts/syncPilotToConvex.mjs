@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// LEGACY: retained from the retired three-artist runtime/import flow.
+// Keep intact for now, but do not expand this as the future publishing contract.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import dotenv from 'dotenv';
