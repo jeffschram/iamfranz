@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: path.resolve('.env.local') });
@@ -97,6 +98,20 @@ async function generateImagePngGoogle({ prompt, filePath, model = 'gemini-3.1-fl
   return { ok: true, provider: 'google', model, filePath };
 }
 
+function runSocialBundleGenerator(absDir) {
+  return new Promise((resolve, reject) => {
+    const child = spawn('node', ['scripts/generateIamfranzSocialBundle.mjs', '--artifactDir', absDir, '--overwrite'], {
+      cwd: '/Users/skippy/src/iamfranz',
+      stdio: 'inherit',
+    });
+    child.on('exit', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`Social bundle generator exited with code ${code}`));
+    });
+    child.on('error', reject);
+  });
+}
+
 async function main() {
   const absDir = path.resolve(artifactDir);
   const metadataPath = path.join(absDir, 'metadata.json');
@@ -125,6 +140,8 @@ async function main() {
     ? await generateImagePngGoogle({ prompt, filePath: outPath, model })
     : await generateImagePngOpenAI({ prompt, filePath: outPath, model });
 
+  await runSocialBundleGenerator(absDir);
+
   console.log(JSON.stringify({
     ok: true,
     rendered: {
@@ -132,6 +149,8 @@ async function main() {
       provider,
       model,
       output: outPath,
+      social: path.join(absDir, 'social.json'),
+      caption: path.join(absDir, 'caption.md'),
     },
     result,
   }, null, 2));

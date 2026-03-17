@@ -7,6 +7,7 @@ import { ArtworkDetail } from "./pages/ArtworkDetail";
 import { ArtistDetail } from "./pages/ArtistDetail";
 import { Artists } from "./pages/Artists";
 import { About } from "./pages/About";
+import { Run } from "./pages/Run";
 import { Process } from "./pages/Process";
 import { Admin } from "./pages/Admin";
 import { AdminLogin } from "./pages/AdminLogin";
@@ -25,6 +26,7 @@ export default function App() {
               <Route path="/work/:id" element={<ArtworkDetail />} />
               <Route path="/artwork/:id" element={<ArtworkDetail />} />
               <Route path="/about" element={<About />} />
+              <Route path="/run" element={<Run />} />
               <Route path="/process" element={<Process />} />
               <Route path="/artists" element={<Artists />} />
               <Route path="/artist/:id" element={<ArtistDetail />} />
