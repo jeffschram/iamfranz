@@ -98,15 +98,15 @@ async function generateImagePngGoogle({ prompt, filePath, model = 'gemini-3.1-fl
   return { ok: true, provider: 'google', model, filePath };
 }
 
-function runSocialBundleGenerator(absDir) {
+function runGenerator(scriptName, args = []) {
   return new Promise((resolve, reject) => {
-    const child = spawn('node', ['scripts/generateIamfranzSocialBundle.mjs', '--artifactDir', absDir, '--overwrite'], {
+    const child = spawn('node', [`scripts/${scriptName}`, ...args], {
       cwd: '/Users/skippy/src/iamfranz',
       stdio: 'inherit',
     });
     child.on('exit', (code) => {
       if (code === 0) resolve();
-      else reject(new Error(`Social bundle generator exited with code ${code}`));
+      else reject(new Error(`${scriptName} exited with code ${code}`));
     });
     child.on('error', reject);
   });
@@ -140,7 +140,9 @@ async function main() {
     ? await generateImagePngGoogle({ prompt, filePath: outPath, model })
     : await generateImagePngOpenAI({ prompt, filePath: outPath, model });
 
-  await runSocialBundleGenerator(absDir);
+  await runGenerator('generateIamfranzSocialBundle.mjs', ['--artifactDir', absDir, '--overwrite']);
+  await runGenerator('generateIamfranzRunRecord.mjs', ['--artifactDir', absDir, '--overwrite']);
+  await runGenerator('syncIamfranzRunFixture.mjs', ['--bundleDir', absDir]);
 
   console.log(JSON.stringify({
     ok: true,
@@ -151,6 +153,8 @@ async function main() {
       output: outPath,
       social: path.join(absDir, 'social.json'),
       caption: path.join(absDir, 'caption.md'),
+      run: path.join(absDir, 'run.json'),
+      syncedFixture: path.resolve('/Users/skippy/src/iamfranz/src/data/iamfranz-run-record.json'),
     },
     result,
   }, null, 2));

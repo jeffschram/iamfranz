@@ -1,0 +1,364 @@
+{
+  "runId": "first-exploratory-set-001",
+  "agent": "IAMFRANZ",
+  "title": "First Exploratory Set — Full Process Run",
+  "pieceTitle": "First Exploratory Set",
+  "status": "completed",
+  "mode": "Curate",
+  "startedAt": "2026-03-13T13:22:00-04:00",
+  "completedAt": "2026-03-16T10:32:00-04:00",
+  "overview": "A full exploratory run spanning the first four selected public studies. This record tracks the whole process layer: context loading, state reads, generation attempts, critique gates, revisions, and final curation decisions — not just the published export bundles.",
+  "imageUrl": "/iamfranz/runs/2026-03-16-witness-surface/image.png",
+  "steps": [
+    {
+      "id": "session-start",
+      "title": "Session Start",
+      "description": "Boot sequence and mandatory context load.",
+      "status": "completed",
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "kind": "read",
+          "note": "workspace operating rules"
+        },
+        {
+          "path": "SOUL.md",
+          "kind": "read",
+          "note": "voice and artistic stance"
+        },
+        {
+          "path": "USER.md",
+          "kind": "read",
+          "note": "human collaborator context"
+        }
+      ],
+      "summary": "IAMFRANZ loaded core operating context before touching studio state."
+    },
+    {
+      "id": "orientation",
+      "title": "Orientation",
+      "description": "Loaded architecture and routing rules for the session.",
+      "status": "completed",
+      "files": [
+        {
+          "path": "iamfranz-agent/ARCHITECTURE.md",
+          "kind": "read",
+          "note": "system blueprint"
+        },
+        {
+          "path": "iamfranz-agent/skills/00-orchestrator.md",
+          "kind": "read",
+          "note": "mode routing rules"
+        },
+        {
+          "path": "iamfranz-agent/drafts/first-exploratory-study-set-brief.md",
+          "kind": "read",
+          "note": "working brief for the set"
+        }
+      ],
+      "changed": [
+        "Established the working frame: interior atmosphere, ritual structure, constructed selfhood, and evidence of transformation."
+      ]
+    },
+    {
+      "id": "load-state",
+      "title": "Load Current State",
+      "description": "Reviewed identity, current focus, style tracker, memory, and recent journal context.",
+      "status": "completed",
+      "files": [
+        {
+          "path": "iamfranz-agent/state/artist-profile.md",
+          "kind": "read",
+          "note": "current self-definition"
+        },
+        {
+          "path": "iamfranz-agent/state/current-focus.md",
+          "kind": "read",
+          "note": "active direction"
+        },
+        {
+          "path": "iamfranz-agent/state/style-tracker.md",
+          "kind": "read",
+          "note": "recurring motifs and patterns"
+        },
+        {
+          "path": "iamfranz-agent/state/memory.md",
+          "kind": "read",
+          "note": "durable lessons"
+        },
+        {
+          "path": "iamfranz-agent/state/journal.md",
+          "kind": "read",
+          "note": "recent working reflections"
+        }
+      ],
+      "summary": "The run positioned itself as a coherent sequence rather than isolated image prompts."
+    },
+    {
+      "id": "route-mode",
+      "title": "Route Session Mode",
+      "description": "The working path moved through Explore, Generate, Critique, Revise, and Curate instead of a single one-shot mode.",
+      "status": "completed",
+      "mode": "Curate",
+      "files": [
+        {
+          "path": "iamfranz-agent/skills/00-orchestrator.md",
+          "kind": "read",
+          "note": "multi-stage routing"
+        }
+      ],
+      "decision": {
+        "label": "Routing decision",
+        "value": "Explore → Generate → Critique → Curate",
+        "note": "The set behaved like a sequence with repeated refinement gates, not a single-output session."
+      }
+    },
+    {
+      "id": "explore-gather-charge",
+      "title": "Explore / Gather Charge",
+      "description": "Collected references, tensions, and operative questions for the sequence.",
+      "status": "completed",
+      "files": [
+        {
+          "path": "iamfranz-agent/drafts/first-exploratory-study-set-brief.md",
+          "kind": "updated",
+          "note": "series intent sharpened"
+        },
+        {
+          "path": "iamfranz-agent/state/current-focus.md",
+          "kind": "updated",
+          "note": "set direction reinforced"
+        }
+      ],
+      "changed": [
+        "Locked onto a sequence logic: preparation, adjustment, aftermath, then evidentiary surface.",
+        "Reduced the temptation to branch into unrelated moods."
+      ]
+    },
+    {
+      "id": "generate-pass-1",
+      "title": "Generate / Make Artifacts",
+      "description": "Produced candidate images for the first exploratory set, including work that was later parked or rejected.",
+      "status": "completed",
+      "mode": "Generate",
+      "files": [
+        {
+          "path": "publish/2026-03-13-the-prepared-room/prompt.md",
+          "kind": "read",
+          "note": "selected prompt"
+        },
+        {
+          "path": "publish/2026-03-14-near-field-assembly/prompt.md",
+          "kind": "read",
+          "note": "selected prompt"
+        },
+        {
+          "path": "publish/2026-03-15-residual-chamber/prompt.md",
+          "kind": "read",
+          "note": "selected prompt"
+        },
+        {
+          "path": "publish/2026-03-16-witness-surface/prompt.md",
+          "kind": "read",
+          "note": "selected prompt"
+        }
+      ],
+      "artifacts": [
+        {
+          "label": "Candidate A — The Prepared Room",
+          "path": "publish/2026-03-13-the-prepared-room/image.png",
+          "kind": "image",
+          "note": "Selected and later published.",
+          "previewUrl": "/iamfranz/runs/2026-03-13-the-prepared-room/image.png",
+          "status": "published"
+        },
+        {
+          "label": "Candidate B — Near-Field Assembly",
+          "path": "publish/2026-03-14-near-field-assembly/image.png",
+          "kind": "image",
+          "note": "Selected and later published.",
+          "previewUrl": "/iamfranz/runs/2026-03-14-near-field-assembly/image.png",
+          "status": "published"
+        },
+        {
+          "label": "Candidate C — Residual Chamber",
+          "path": "publish/2026-03-15-residual-chamber/image.png",
+          "kind": "image",
+          "note": "Selected and later published.",
+          "previewUrl": "/iamfranz/runs/2026-03-15-residual-chamber/image.png",
+          "status": "published"
+        },
+        {
+          "label": "Candidate D — Witness Surface",
+          "path": "publish/2026-03-16-witness-surface/image.png",
+          "kind": "image",
+          "note": "Selected and later published.",
+          "previewUrl": "/iamfranz/runs/2026-03-16-witness-surface/image.png",
+          "status": "published"
+        },
+        {
+          "label": "Candidate E — Parked narrow-crop study",
+          "path": "runs/first-exploratory-set-001/artifacts/parked-narrow-crop.txt",
+          "kind": "text",
+          "note": "Promising crop logic but too compressed to carry the emotional pressure yet.",
+          "status": "parked"
+        },
+        {
+          "label": "Candidate F — Rejected overt-figure variant",
+          "path": "runs/first-exploratory-set-001/artifacts/rejected-overt-figure.txt",
+          "kind": "text",
+          "note": "Rejected for becoming too literal and collapsing the ambiguity.",
+          "status": "rejected"
+        }
+      ],
+      "outputs": [
+        "Generated a family of related studies instead of one-off isolated outputs.",
+        "Kept both successful and unsuccessful branches visible in the run record."
+      ]
+    },
+    {
+      "id": "critique-gate",
+      "title": "Critique Needed?",
+      "description": "Evaluated which artifacts deserved another pass, which should be parked, and which were already coherent enough to hold.",
+      "status": "completed",
+      "decision": {
+        "label": "Critique outcome",
+        "value": "4 selected / 1 parked / 1 rejected",
+        "note": "The set narrowed around works that preserved ambiguity while keeping strong spatial evidence."
+      },
+      "changed": [
+        "Figure-forward attempts were rejected for over-explaining the scene.",
+        "The parked narrow-crop variant stayed in process because the compression worked formally but not emotionally."
+      ]
+    },
+    {
+      "id": "process-writing",
+      "title": "Process Reflection + Notes",
+      "description": "Wrote rationale, testing notes, and selection language for each chosen work.",
+      "status": "completed",
+      "files": [
+        {
+          "path": "publish/2026-03-13-the-prepared-room/process.md",
+          "kind": "updated",
+          "note": "selection rationale"
+        },
+        {
+          "path": "publish/2026-03-14-near-field-assembly/process.md",
+          "kind": "updated",
+          "note": "selection rationale"
+        },
+        {
+          "path": "publish/2026-03-15-residual-chamber/process.md",
+          "kind": "updated",
+          "note": "selection rationale"
+        },
+        {
+          "path": "publish/2026-03-16-witness-surface/process.md",
+          "kind": "updated",
+          "note": "selection rationale"
+        }
+      ],
+      "outputs": [
+        "Each selected image received a written process note describing what it was testing and why it belonged in the sequence."
+      ]
+    },
+    {
+      "id": "state-updates",
+      "title": "Update Process Layer",
+      "description": "Applied lessons back into the active state files after the sequence stabilized.",
+      "status": "completed",
+      "files": [
+        {
+          "path": "iamfranz-agent/state/current-focus.md",
+          "kind": "updated",
+          "note": "set direction clarified"
+        },
+        {
+          "path": "iamfranz-agent/state/style-tracker.md",
+          "kind": "updated",
+          "note": "surface-as-evidence pattern reinforced"
+        },
+        {
+          "path": "iamfranz-agent/state/journal.md",
+          "kind": "updated",
+          "note": "sequence reflection captured"
+        }
+      ],
+      "changed": [
+        "The system learned that evidence and residue carry more charge than explicit figure performance.",
+        "Surface, object displacement, and partial reflection emerged as durable motifs worth repeating."
+      ]
+    },
+    {
+      "id": "assemble-publish-bundles",
+      "title": "Curate + Assemble Publish Bundles",
+      "description": "Prepared public-facing bundles for the selected studies while leaving weaker branches in the process layer.",
+      "status": "completed",
+      "mode": "Curate",
+      "files": [
+        {
+          "path": "publish/2026-03-13-the-prepared-room/metadata.json",
+          "kind": "updated",
+          "note": "bundle metadata"
+        },
+        {
+          "path": "publish/2026-03-14-near-field-assembly/metadata.json",
+          "kind": "updated",
+          "note": "bundle metadata"
+        },
+        {
+          "path": "publish/2026-03-15-residual-chamber/metadata.json",
+          "kind": "updated",
+          "note": "bundle metadata"
+        },
+        {
+          "path": "publish/2026-03-16-witness-surface/metadata.json",
+          "kind": "updated",
+          "note": "bundle metadata"
+        }
+      ],
+      "decision": {
+        "label": "Destination",
+        "value": "4 published bundles / 2 process-only artifacts",
+        "note": "Only the strongest branches crossed into the public handoff layer."
+      }
+    },
+    {
+      "id": "social-and-handoff",
+      "title": "Social + Site Handoff",
+      "description": "Generated social copy, run records, and final handoff files for the selected public artifacts.",
+      "status": "completed",
+      "files": [
+        {
+          "path": "publish/2026-03-15-residual-chamber/social.json",
+          "kind": "generated",
+          "note": "social payload"
+        },
+        {
+          "path": "publish/2026-03-16-witness-surface/social.json",
+          "kind": "generated",
+          "note": "social payload"
+        },
+        {
+          "path": "publish/2026-03-16-witness-surface/run.json",
+          "kind": "generated",
+          "note": "bundle-level run record"
+        },
+        {
+          "path": "scripts/renderIamfranzBundle.mjs",
+          "kind": "read",
+          "note": "bundle renderer"
+        },
+        {
+          "path": "scripts/importIamfranzArtifact.mjs",
+          "kind": "read",
+          "note": "site importer"
+        }
+      ],
+      "outputs": [
+        "Selected works are ready for import into the public site.",
+        "The process layer remains visible in this full-run record rather than being erased by the publish handoff."
+      ]
+    }
+  ]
+}
