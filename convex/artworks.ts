@@ -5,17 +5,11 @@ export const list = query({
   args: {},
   handler: async (ctx) => {
     const artworks = await ctx.db.query("artworks").collect();
-    
+
     return Promise.all(
       artworks.map(async (artwork) => {
-        const artist = await ctx.db.get(artwork.artistId);
         const imageUrl = await ctx.storage.getUrl(artwork.imageId);
-        
-        return {
-          ...artwork,
-          artist,
-          imageUrl,
-        };
+        return { ...artwork, imageUrl };
       })
     );
   },
@@ -28,17 +22,11 @@ export const getFeatured = query({
       .query("artworks")
       .withIndex("by_featured", (q) => q.eq("featured", true))
       .collect();
-    
+
     return Promise.all(
       artworks.map(async (artwork) => {
-        const artist = await ctx.db.get(artwork.artistId);
         const imageUrl = await ctx.storage.getUrl(artwork.imageId);
-        
-        return {
-          ...artwork,
-          artist,
-          imageUrl,
-        };
+        return { ...artwork, imageUrl };
       })
     );
   },
@@ -49,35 +37,9 @@ export const getById = query({
   handler: async (ctx, args) => {
     const artwork = await ctx.db.get(args.id);
     if (!artwork) return null;
-    
-    const artist = await ctx.db.get(artwork.artistId);
-    const imageUrl = await ctx.storage.getUrl(artwork.imageId);
-    
-    return {
-      ...artwork,
-      artist,
-      imageUrl,
-    };
-  },
-});
 
-export const getByArtist = query({
-  args: { artistId: v.id("artists") },
-  handler: async (ctx, args) => {
-    const artworks = await ctx.db
-      .query("artworks")
-      .withIndex("by_artist", (q) => q.eq("artistId", args.artistId))
-      .collect();
-    
-    return Promise.all(
-      artworks.map(async (artwork) => {
-        const imageUrl = await ctx.storage.getUrl(artwork.imageId);
-        return {
-          ...artwork,
-          imageUrl,
-        };
-      })
-    );
+    const imageUrl = await ctx.storage.getUrl(artwork.imageId);
+    return { ...artwork, imageUrl };
   },
 });
 
@@ -86,24 +48,13 @@ export const create = mutation({
     title: v.string(),
     pieceTitle: v.optional(v.string()),
     description: v.string(),
-    artistId: v.id("artists"),
     imageId: v.id("_storage"),
     year: v.number(),
     medium: v.string(),
     prompt: v.optional(v.string()),
+    statement: v.optional(v.string()),
     artistThinking: v.optional(v.string()),
-    inspirationNote: v.optional(v.string()),
-    researchSourceTitle: v.optional(v.string()),
-    researchSourceUrl: v.optional(v.string()),
-    learningTechnique: v.optional(v.string()),
-    learningConcept: v.optional(v.string()),
-    learningVisual: v.optional(v.string()),
-    socialCaption: v.optional(v.string()),
-    socialHashtags: v.optional(v.array(v.string())),
-    socialAltText: v.optional(v.string()),
-    socialPostingMetadata: v.optional(v.string()),
-    dimensions: v.optional(v.string()),
-    price: v.optional(v.number()),
+    sortOrder: v.optional(v.number()),
     isAvailable: v.boolean(),
     featured: v.boolean(),
   },
@@ -118,25 +69,15 @@ export const update = mutation({
     title: v.optional(v.string()),
     pieceTitle: v.optional(v.string()),
     description: v.optional(v.string()),
+    imageId: v.optional(v.id("_storage")),
     year: v.optional(v.number()),
     medium: v.optional(v.string()),
     prompt: v.optional(v.string()),
+    statement: v.optional(v.string()),
     artistThinking: v.optional(v.string()),
-    inspirationNote: v.optional(v.string()),
-    researchSourceTitle: v.optional(v.string()),
-    researchSourceUrl: v.optional(v.string()),
-    learningTechnique: v.optional(v.string()),
-    learningConcept: v.optional(v.string()),
-    learningVisual: v.optional(v.string()),
-    socialCaption: v.optional(v.string()),
-    socialHashtags: v.optional(v.array(v.string())),
-    socialAltText: v.optional(v.string()),
-    socialPostingMetadata: v.optional(v.string()),
-    dimensions: v.optional(v.string()),
-    price: v.optional(v.number()),
+    sortOrder: v.optional(v.number()),
     isAvailable: v.optional(v.boolean()),
     featured: v.optional(v.boolean()),
-    imageId: v.optional(v.id("_storage")),
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args;

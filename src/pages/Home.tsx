@@ -68,7 +68,7 @@ export function Home() {
           </div>
         </Link>
       </div>
-      <div className="text-center">        
+      <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-semibold text-black mb-2">
           <Link to={`/work/${latest._id}`} className="hover:text-gray-700 transition-colors">
             {displayTitle}
@@ -80,7 +80,7 @@ export function Home() {
             IAMFRANZ
           </Link>
           </p>
-        ) : null}        
+        ) : null}
       </div>
     </div>
   );

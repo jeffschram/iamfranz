@@ -22,7 +22,9 @@
     "iamfranz:import-artifact": "node scripts/importIamfranzArtifact.mjs",
     "iamfranz:import-latest": "node scripts/importLatestIamfranzArtifact.mjs",
     "iamfranz:import-today": "node scripts/importTodayIamfranz.mjs",
-    "iamfranz:prep-ig-draft": "node scripts/prepareLatestInstagramDraft.mjs"
+    "iamfranz:prep-ig-draft": "node scripts/prepareLatestInstagramDraft.mjs",
+    "iamfranz2:sync": "node scripts/syncFromIamfranz2.mjs",
+    "iamfranz2:sync:dry": "node scripts/syncFromIamfranz2.mjs --dry-run"
   },
   "dependencies": {
     "@convex-dev/auth": "^0.0.80",
