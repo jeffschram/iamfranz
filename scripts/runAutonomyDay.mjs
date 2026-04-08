@@ -5,6 +5,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import dotenv from 'dotenv';
+import { spawn } from 'node:child_process';
 
 const ARTISTS = [
   {
@@ -375,9 +376,24 @@ function fallbackInspiration(plan) {
   return `Inspired by ${a.title} and ${b.title}, with a deliberate resistance to ${plan.resist?.title ?? 'safe repetition'}.`;
 }
 
+function runScript(scriptName, args = []) {
+  return new Promise((resolve, reject) => {
+    const child = spawn('node', [path.join('scripts', scriptName), ...args], {
+      cwd: path.resolve('.'),
+      stdio: 'inherit',
+    });
+    child.on('exit', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`${scriptName} exited with code ${code}`));
+    });
+    child.on('error', reject);
+  });
+}
+
 async function main() {
   dotenv.config({ path: path.resolve('.env.local') });
 
+  const startedAt = new Date().toISOString();
   const runId = arg('--runId', nyRunId());
   const date = arg('--date', runId.slice(0, 10));
   const dayDir = path.resolve(arg('--dayDir', path.join('runs', runId)));
@@ -603,7 +619,10 @@ async function main() {
   await writeJson(graphPath, graph);
   await writeJson(memoryPath, memory);
   await writeJson(legacyStatePath, legacyState);
-  await writeJson(path.join(stateDir, 'last_run.json'), { date, runId, status: 'completed' });
+  await writeJson(path.join(stateDir, 'last_run.json'), { date, runId, status: 'completed', startedAt, completedAt: new Date().toISOString() });
+
+  await runScript('generateIamfranzProcessRunRecord.mjs', ['--dayDir', dayDir, '--overwrite']);
+  await runScript('syncIamfranzProcessRuns.mjs', ['--runDir', dayDir]);
 
   console.log(`Autonomy day run complete: ${dayDir}`);
   console.log(`Summary: ${path.join(curatorSummariesDir, `${runId}_summary.md`)}`);

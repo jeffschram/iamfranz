@@ -2,10 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
   const location = useLocation();
-  const isLocalAdminVisible =
-    typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
-  
+
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
     if (path !== "/" && location.pathname.startsWith(path)) return true;
@@ -51,18 +48,6 @@ export function Header() {
             >
               PROCESS
             </Link> */}
-            {isLocalAdminVisible ? (
-              <Link
-                to="/admin"
-                className={`text-xs font-medium transition-colors ${
-                  isActive("/admin")
-                    ? "text-black border-b-2 border-black"
-                    : "text-gray-600 hover:text-black"
-                }`}
-              >
-                ADMIN
-              </Link>
-            ) : null}
           </nav>
         </div>
       </div>

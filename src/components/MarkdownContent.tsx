@@ -112,7 +112,7 @@ export function MarkdownContent({ content, className, stripFirstH1 = false }: Ma
         }
 
         return (
-          <p key={index} className="text-gray-700 leading-relaxed">
+          <p key={index} className="text-gray-700 leading-relaxed mb-4 last:mb-0">
             {renderInline(block.text)}
           </p>
         );

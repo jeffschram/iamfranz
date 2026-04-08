@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 type Artwork = {
   _id: string;
+  _creationTime: number;
+  sortOrder?: number | null;
   title: string;
   pieceTitle?: string | null;
   imageUrl?: string | null;
@@ -24,7 +26,11 @@ function extractDisplayDate(title: string): string | null {
 }
 
 function sortNewestFirst(artworks: Artwork[]): Artwork[] {
-  return [...artworks].sort((a, b) => b.title.localeCompare(a.title));
+  return [...artworks].sort((a, b) => {
+    const aOrder = a.sortOrder ?? a._creationTime;
+    const bOrder = b.sortOrder ?? b._creationTime;
+    return bOrder - aOrder;
+  });
 }
 
 export function Gallery() {

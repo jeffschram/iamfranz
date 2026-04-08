@@ -14,8 +14,17 @@
     "pilot:run-now": "node scripts/runPilotNow.mjs",
     "pilot:run-now:google": "IAMFRANZ_IMAGE_PROVIDER=google node scripts/runPilotNow.mjs",
     "iamfranz:render-bundle": "node scripts/renderIamfranzBundle.mjs",
+    "iamfranz:social-bundle": "node scripts/generateIamfranzSocialBundle.mjs",
+    "iamfranz:run-record": "node scripts/generateIamfranzRunRecord.mjs",
+    "iamfranz:sync-run-fixture": "node scripts/syncIamfranzRunFixture.mjs",
+    "iamfranz:process-run-record": "node scripts/generateIamfranzProcessRunRecord.mjs",
+    "iamfranz:sync-process-runs": "node scripts/syncIamfranzProcessRuns.mjs",
     "iamfranz:import-artifact": "node scripts/importIamfranzArtifact.mjs",
-    "iamfranz:import-latest": "node scripts/importLatestIamfranzArtifact.mjs"
+    "iamfranz:import-latest": "node scripts/importLatestIamfranzArtifact.mjs",
+    "iamfranz:import-today": "node scripts/importTodayIamfranz.mjs",
+    "iamfranz:prep-ig-draft": "node scripts/prepareLatestInstagramDraft.mjs",
+    "iamfranz2:sync": "node scripts/syncFromIamfranz2.mjs",
+    "iamfranz2:sync:dry": "node scripts/syncFromIamfranz2.mjs --dry-run"
   },
   "dependencies": {
     "@convex-dev/auth": "^0.0.80",

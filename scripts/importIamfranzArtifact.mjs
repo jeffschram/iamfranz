@@ -152,6 +152,9 @@ async function main() {
 
   const promptText = promptPath ? await readTextIfExists(promptPath) : undefined;
   const processText = processPath ? await readTextIfExists(processPath) : undefined;
+  const socialPath = metadata.social?.socialFile ? path.resolve(absDir, metadata.social.socialFile) : path.resolve(absDir, 'social.json');
+  const socialRaw = await readTextIfExists(socialPath);
+  const social = socialRaw ? JSON.parse(socialRaw) : undefined;
 
   const date = normalizeDateString(metadata.publishedAt || metadata.createdAt) || new Date().toISOString().slice(0, 10);
   const year = inferYear(metadata);
@@ -176,6 +179,10 @@ async function main() {
     learningTechnique: metadata.learning?.technique,
     learningConcept: metadata.learning?.concept,
     learningVisual: metadata.learning?.visual,
+    socialCaption: social?.caption,
+    socialHashtags: social?.hashtags,
+    socialAltText: social?.altText,
+    socialPostingMetadata: social?.postingMetadata ? JSON.stringify(social.postingMetadata, null, 2) : undefined,
     dimensions,
     price: undefined,
     isAvailable,

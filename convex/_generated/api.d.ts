@@ -8,13 +8,10 @@
  * @module
  */
 
-import type * as artistUpdates from "../artistUpdates.js";
-import type * as artists from "../artists.js";
 import type * as artworks from "../artworks.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as router from "../router.js";
-import type * as seed from "../seed.js";
 
 import type {
   ApiFromModules,
@@ -23,13 +20,10 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  artistUpdates: typeof artistUpdates;
-  artists: typeof artists;
   artworks: typeof artworks;
   auth: typeof auth;
   http: typeof http;
   router: typeof router;
-  seed: typeof seed;
 }>;
 
 /**
