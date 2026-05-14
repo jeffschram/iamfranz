@@ -13,11 +13,44 @@ export function Header() {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-xl font-semibold tracking-tight text-black">
+          <Link
+            to="/"
+            className="text-xl font-semibold tracking-tight text-black"
+          >
             IAMFRANZ
           </Link>
-          
+
           <nav className="flex space-x-6">
+            <Link
+              to="/how-it-works"
+              className={`text-xs font-medium transition-colors ${
+                isActive("/how-it-works")
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-600 hover:text-black"
+              }`}
+            >
+              HOW IT WORKS
+            </Link>
+            <Link
+              to="/artist-mission"
+              className={`text-xs font-medium transition-colors ${
+                isActive("/artist-mission")
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-600 hover:text-black"
+              }`}
+            >
+              ARTIST MISSION
+            </Link>
+            <Link
+              to="/evolution"
+              className={`text-xs font-medium transition-colors ${
+                isActive("/evolution")
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-600 hover:text-black"
+              }`}
+            >
+              EVOLUTION
+            </Link>
             <Link
               to="/archive"
               className={`text-xs font-medium transition-colors ${
@@ -38,16 +71,6 @@ export function Header() {
             >
               ABOUT
             </Link>
-            {/* <Link
-              to="/process"
-              className={`text-xs font-medium transition-colors ${
-                isActive("/process")
-                  ? "text-black border-b-2 border-black"
-                  : "text-gray-600 hover:text-black"
-              }`}
-            >
-              PROCESS
-            </Link> */}
           </nav>
         </div>
       </div>

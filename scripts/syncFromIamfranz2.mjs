@@ -95,6 +95,16 @@ function folderToEpoch(name) {
   return new Date(year, month, day, hour, minute).getTime();
 }
 
+/**
+ * Extract the last ## Iteration N section from a running evolution-log.md.
+ * Returns the full text of that section, or null if not found.
+ */
+function parseLastEvolutionEntry(text) {
+  const sections = text.split(/^## Iteration /m).filter(Boolean);
+  if (!sections.length) return null;
+  return ('## Iteration ' + sections[sections.length - 1]).trim();
+}
+
 /** Upload a PNG/JPG to Convex storage. Returns the storageId. */
 async function uploadImage(filePath) {
   const bytes = await fs.readFile(filePath);
@@ -157,6 +167,9 @@ for (const folder of archiveFolders) {
   const descContent = await readTextSafe(path.join(dir, 'description.md')) ?? '';
   const notesContent = await readTextSafe(path.join(dir, 'artist-notes.md')) ?? '';
   const statementContent = await readTextSafe(path.join(dir, 'statement.md')) ?? '';
+  const missionContent = await readTextSafe(path.join(dir, 'artist-mission.md')) ?? '';
+  const inspirationContent = await readTextSafe(path.join(dir, 'inspiration-log.md')) ?? '';
+  const evolutionLogContent = await readTextSafe(path.join(dir, 'evolution-log.md')) ?? '';
 
   const pieceTitle = parsePieceTitle(descContent) ?? folder;
   const date = folderToDate(folder) ?? new Date().toISOString().slice(0, 10);
@@ -165,6 +178,9 @@ for (const folder of archiveFolders) {
   const description = parseDescriptionSummary(descContent);
   const artistThinking = notesContent.trim() || undefined;
   const statement = statementContent.trim() || undefined;
+  const artistMission = missionContent.trim() || undefined;
+  const inspirationEntry = inspirationContent.trim() || undefined;
+  const evolutionEntry = parseLastEvolutionEntry(evolutionLogContent) || undefined;
   const sortOrder = folderToEpoch(folder);
 
   console.log(`⬆  ${folder} → "${title}"`);
@@ -186,6 +202,9 @@ for (const folder of archiveFolders) {
     statement,
     sortOrder,
     artistThinking,
+    artistMission,
+    inspirationEntry,
+    evolutionEntry,
     isAvailable: false,
     featured: false,
   });
@@ -205,6 +224,9 @@ if (latestHasImage && latestHasDesc) {
   const descContent = await readTextSafe(path.join(latestDir, 'description.md')) ?? '';
   const notesContent = await readTextSafe(path.join(latestDir, 'artist-notes.md')) ?? '';
   const statementContent = await readTextSafe(path.join(latestDir, 'statement.md')) ?? '';
+  const missionContent = await readTextSafe(path.join(latestDir, 'artist-mission.md')) ?? '';
+  const inspirationContent = await readTextSafe(path.join(latestDir, 'inspiration-log.md')) ?? '';
+  const evolutionLogContent = await readTextSafe(path.join(latestDir, 'evolution-log.md')) ?? '';
 
   const pieceTitle = parsePieceTitle(descContent) ?? 'Untitled';
   const today = new Date().toISOString().slice(0, 10);
@@ -213,6 +235,9 @@ if (latestHasImage && latestHasDesc) {
   const description = parseDescriptionSummary(descContent);
   const artistThinking = notesContent.trim() || undefined;
   const statement = statementContent.trim() || undefined;
+  const artistMission = missionContent.trim() || undefined;
+  const inspirationEntry = inspirationContent.trim() || undefined;
+  const evolutionEntry = parseLastEvolutionEntry(evolutionLogContent) || undefined;
 
   const sortOrder = Date.now(); // latest always gets the newest sort order
   const existingLatestId = syncState['latest'];
@@ -243,6 +268,9 @@ if (latestHasImage && latestHasDesc) {
         statement,
         sortOrder,
         artistThinking,
+        artistMission,
+        inspirationEntry,
+        evolutionEntry,
         featured: true,
       });
       console.log(`   ✅ Updated latest artwork ${existingLatestId}`);
@@ -259,6 +287,9 @@ if (latestHasImage && latestHasDesc) {
         statement,
         sortOrder,
         artistThinking,
+        artistMission,
+        inspirationEntry,
+        evolutionEntry,
         isAvailable: false,
         featured: true,
       });

@@ -14,6 +14,9 @@ const applicationTables = {
     statement: v.optional(v.string()),
     artistThinking: v.optional(v.string()),
     sortOrder: v.optional(v.number()),
+    artistMission: v.optional(v.string()),
+    inspirationEntry: v.optional(v.string()),
+    evolutionEntry: v.optional(v.string()),
     isAvailable: v.boolean(),
     featured: v.boolean(),
   })
