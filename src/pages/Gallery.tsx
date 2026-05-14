@@ -61,7 +61,7 @@ export function Gallery() {
           <p className="text-gray-500">No artworks available yet.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {sorted.map((artwork) => {
             const displayTitle = artwork.pieceTitle ?? artwork.title;
             const displayDate = extractDisplayDate(artwork.title);
@@ -79,11 +79,11 @@ export function Gallery() {
                     <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
                   )}
                 </div>
-                <h2 className="font-medium text-base text-black group-hover:text-gray-600 transition-colors">
+                <h2 className="font-medium text-base text-black group-hover:text-gray-600 transition-colors lg:text-sm">
                   {displayTitle}
                 </h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  {displayDate ? `${displayDate} · ` : ""}IAMFRANZ
+                <p className="text-sm text-gray-500 mt-1 lg:text-xs">
+                  {displayDate ? `${displayDate}` : ""}
                 </p>
               </Link>
             );

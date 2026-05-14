@@ -70,12 +70,16 @@ function parseBlocks(content: string): Block[] {
 }
 
 function renderInline(text: string) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).filter(Boolean);
 
   return parts.map((part, index) => {
     const strongMatch = part.match(/^\*\*([^*]+)\*\*$/);
     if (strongMatch) {
       return <strong key={index} className="font-semibold text-gray-900">{strongMatch[1]}</strong>;
+    }
+    const emMatch = part.match(/^\*([^*]+)\*$/);
+    if (emMatch) {
+      return <em key={index}>{emMatch[1]}</em>;
     }
     return <span key={index}>{part}</span>;
   });
