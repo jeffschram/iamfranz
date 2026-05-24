@@ -44,3 +44,4 @@ _archive/
 *.njsproj
 *.sln
 *.sw?
+node_modules
