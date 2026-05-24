@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import { Header } from "./components/Header";
 import { Home } from "./pages/Home";
+import { Full } from "./pages/Full";
 import { Evolution } from "./pages/Evolution";
 import { Gallery } from "./pages/Gallery";
 import { ArtworkDetail } from "./pages/ArtworkDetail";
@@ -18,6 +19,7 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/full" element={<Full />} />
             <Route path="/evolution" element={<Evolution />} />
             <Route path="/archive" element={<Gallery />} />
             <Route path="/work/:id" element={<ArtworkDetail />} />
