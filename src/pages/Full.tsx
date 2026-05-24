@@ -2,6 +2,8 @@ import { useQuery } from "convex/react";
 import { Link } from "react-router-dom";
 import { api } from "../../convex/_generated/api";
 
+/* why no full in deploy? */
+
 export function Full() {
   const featured = useQuery(api.artworks.getFeatured);
 
