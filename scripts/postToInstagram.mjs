@@ -94,7 +94,7 @@ async function createBufferPost({ text, imageUrl, altText }) {
       mode: 'shareNow',
       text,
       assets: {
-        images: [{ url: imageUrl, metadata: { altText } }],
+        image: { url: imageUrl, metadata: { altText } },
       },
       metadata: {
         instagram: { type: 'post', shouldShareToFeed: true },
