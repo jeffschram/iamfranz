@@ -28,13 +28,13 @@ export function Full() {
   const displayTitle = artwork.pieceTitle ?? artwork.title;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white">
+    <div className="fixed inset-0 z-[100] bg-black">
       <Link to={`/work/${artwork._id}`} className="block w-full h-full">
         {artwork.imageUrl ? (
           <img
             src={artwork.imageUrl}
             alt={displayTitle}
-            className="w-full h-full object-cover block"
+            className="w-full h-full object-contain block"
             loading="eager"
           />
         ) : (
