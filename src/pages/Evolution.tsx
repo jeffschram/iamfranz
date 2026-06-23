@@ -1,4 +1,4 @@
-import { useQuery } from "convex/react";
+import { usePaginatedQuery } from "convex/react";
 import { Link } from "react-router-dom";
 import { api } from "../../convex/_generated/api";
 import { MarkdownContent } from "../components/MarkdownContent";
@@ -37,9 +37,13 @@ function extractFirstParagraph(text: string): string | null {
 }
 
 export function Evolution() {
-  const artworks = useQuery(api.artworks.list) as Artwork[] | undefined;
+  const { results: artworks, status, loadMore } = usePaginatedQuery(
+    api.artworks.listEvolutionPage,
+    {},
+    { initialNumItems: 6 },
+  );
 
-  if (!artworks) {
+  if (status === "LoadingFirstPage") {
     return (
       <div className="flex justify-center items-center min-h-[70vh]">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black" />
@@ -55,16 +59,11 @@ export function Evolution() {
     );
   }
 
-  const sorted = [...artworks].sort(
-    (a, b) =>
-      (b.sortOrder ?? b._creationTime) - (a.sortOrder ?? a._creationTime),
-  );
-
   return (
     <div className="max-w-4xl mx-auto px-6 py-14">
-      {sorted.map((artwork, index) => {
+      {artworks.map((artwork, index) => {
         const isLatest = index === 0;
-        const isLast = index === sorted.length - 1;
+        const isLast = status === "Exhausted" && index === artworks.length - 1;
         const displayTitle = artwork.pieceTitle ?? artwork.title;
         const displayDate = extractDisplayDate(artwork.title);
         const rawText = artwork.statement ?? artwork.artistThinking ?? null;
@@ -122,6 +121,19 @@ export function Evolution() {
           </div>
         );
       })}
+
+      {status !== "Exhausted" && (
+        <div className="flex justify-center pt-2">
+          <button
+            type="button"
+            onClick={() => loadMore(6)}
+            disabled={status === "LoadingMore"}
+            className="border border-gray-300 px-5 py-2 text-sm font-medium text-black hover:bg-gray-50 disabled:cursor-wait disabled:text-gray-400"
+          >
+            {status === "LoadingMore" ? "Loading..." : "Load more"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,11 @@
+import { paginationOptsValidator } from "convex/server";
 import { query, mutation } from "./_generated/server";
+import type { QueryCtx } from "./_generated/server";
 import { v } from "convex/values";
+
+function orderedArtworks(ctx: QueryCtx) {
+  return ctx.db.query("artworks").withIndex("by_sort_order").order("desc");
+}
 
 export const list = query({
   args: {},
@@ -12,6 +18,48 @@ export const list = query({
         return { ...artwork, imageUrl };
       })
     );
+  },
+});
+
+export const listGalleryPage = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    const page = await orderedArtworks(ctx).paginate(args.paginationOpts);
+    const items = await Promise.all(
+      page.page.map(async (artwork) => ({
+        _id: artwork._id,
+        _creationTime: artwork._creationTime,
+        sortOrder: artwork.sortOrder,
+        title: artwork.title,
+        pieceTitle: artwork.pieceTitle,
+        imageUrl: await ctx.storage.getUrl(artwork.imageId),
+      }))
+    );
+
+    return { ...page, page: items };
+  },
+});
+
+export const listEvolutionPage = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    const page = await orderedArtworks(ctx).paginate(args.paginationOpts);
+    const items = await Promise.all(
+      page.page.map(async (artwork) => ({
+        _id: artwork._id,
+        _creationTime: artwork._creationTime,
+        sortOrder: artwork.sortOrder,
+        title: artwork.title,
+        pieceTitle: artwork.pieceTitle,
+        imageUrl: await ctx.storage.getUrl(artwork.imageId),
+        statement: artwork.statement,
+        artistThinking: artwork.artistThinking,
+        inspirationEntry: artwork.inspirationEntry,
+        evolutionEntry: artwork.evolutionEntry,
+      }))
+    );
+
+    return { ...page, page: items };
   },
 });
 
