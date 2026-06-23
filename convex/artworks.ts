@@ -1,10 +1,44 @@
 import { paginationOptsValidator } from "convex/server";
 import { query, mutation } from "./_generated/server";
 import type { QueryCtx } from "./_generated/server";
+import type { Doc } from "./_generated/dataModel";
 import { v } from "convex/values";
 
 function orderedArtworks(ctx: QueryCtx) {
   return ctx.db.query("artworks").withIndex("by_sort_order").order("desc");
+}
+
+function chronologicalArtworks(ctx: QueryCtx) {
+  return ctx.db.query("artworks").withIndex("by_sort_order").order("asc");
+}
+
+async function cycleArtwork(ctx: QueryCtx, artwork: Doc<"artworks"> | null) {
+  if (!artwork) return null;
+
+  return {
+    _id: artwork._id,
+    _creationTime: artwork._creationTime,
+    sortOrder: artwork.sortOrder,
+    title: artwork.title,
+    pieceTitle: artwork.pieceTitle,
+    description: artwork.description,
+    statement: artwork.statement,
+    imageUrl: await ctx.storage.getUrl(artwork.imageId),
+  };
+}
+
+async function firstCycleArtwork(ctx: QueryCtx) {
+  return await chronologicalArtworks(ctx).first();
+}
+
+async function nextCycleArtwork(ctx: QueryCtx, sortOrder: number | undefined) {
+  if (sortOrder === undefined) return await firstCycleArtwork(ctx);
+
+  return await ctx.db
+    .query("artworks")
+    .withIndex("by_sort_order", (q) => q.gt("sortOrder", sortOrder))
+    .order("asc")
+    .first();
 }
 
 export const list = query({
@@ -18,6 +52,37 @@ export const list = query({
         return { ...artwork, imageUrl };
       })
     );
+  },
+});
+
+export const getCycleWindow = query({
+  args: { currentSortOrder: v.optional(v.number()) },
+  handler: async (ctx, args) => {
+    const current =
+      args.currentSortOrder === undefined
+        ? await firstCycleArtwork(ctx)
+        : (await ctx.db
+            .query("artworks")
+            .withIndex("by_sort_order", (q) => q.eq("sortOrder", args.currentSortOrder))
+            .first()) ?? (await firstCycleArtwork(ctx));
+
+    if (!current) return { current: null, next: null, nextWrapped: false };
+
+    let next = await nextCycleArtwork(ctx, current.sortOrder);
+    let nextWrapped = false;
+
+    if (!next) {
+      next = await firstCycleArtwork(ctx);
+      nextWrapped = true;
+    }
+
+    if (next?._id === current._id) nextWrapped = true;
+
+    return {
+      current: await cycleArtwork(ctx, current),
+      next: await cycleArtwork(ctx, next),
+      nextWrapped,
+    };
   },
 });
 
