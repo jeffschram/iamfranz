@@ -21,7 +21,8 @@ const applicationTables = {
     featured: v.boolean(),
   })
     .index("by_featured", ["featured"])
-    .index("by_availability", ["isAvailable"]),
+    .index("by_availability", ["isAvailable"])
+    .index("by_sort_order", ["sortOrder"]),
 };
 
 export default defineSchema({

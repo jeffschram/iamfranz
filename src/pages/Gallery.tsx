@@ -1,4 +1,4 @@
-import { useQuery } from "convex/react";
+import { usePaginatedQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Link } from "react-router-dom";
 
@@ -25,26 +25,20 @@ function extractDisplayDate(title: string): string | null {
   }).format(date);
 }
 
-function sortNewestFirst(artworks: Artwork[]): Artwork[] {
-  return [...artworks].sort((a, b) => {
-    const aOrder = a.sortOrder ?? a._creationTime;
-    const bOrder = b.sortOrder ?? b._creationTime;
-    return bOrder - aOrder;
-  });
-}
-
 export function Gallery() {
-  const artworks = useQuery(api.artworks.list) as Artwork[] | undefined;
+  const { results: artworks, status, loadMore } = usePaginatedQuery(
+    api.artworks.listGalleryPage,
+    {},
+    { initialNumItems: 10 },
+  );
 
-  if (!artworks) {
+  if (status === "LoadingFirstPage") {
     return (
       <div className="flex justify-center items-center min-h-96">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
       </div>
     );
   }
-
-  const sorted = sortNewestFirst(artworks);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -56,39 +50,54 @@ export function Gallery() {
         </p>
       </div>
 
-      {sorted.length === 0 ? (
+      {artworks.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500">No artworks available yet.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
-          {sorted.map((artwork) => {
-            const displayTitle = artwork.pieceTitle ?? artwork.title;
-            const displayDate = extractDisplayDate(artwork.title);
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
+            {artworks.map((artwork) => {
+              const displayTitle = artwork.pieceTitle ?? artwork.title;
+              const displayDate = extractDisplayDate(artwork.title);
 
-            return (
-              <Link key={artwork._id} to={`/work/${artwork._id}`} className="group cursor-pointer">
-                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
-                  {artwork.imageUrl ? (
-                    <img
-                      src={artwork.imageUrl}
-                      alt={displayTitle}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
-                  )}
-                </div>
-                <h2 className="font-medium text-base text-black group-hover:text-gray-600 transition-colors lg:text-sm">
-                  {displayTitle}
-                </h2>
-                <p className="text-sm text-gray-500 mt-1 lg:text-xs">
-                  {displayDate ? `${displayDate}` : ""}
-                </p>
-              </Link>
-            );
-          })}
-        </div>
+              return (
+                <Link key={artwork._id} to={`/work/${artwork._id}`} className="group cursor-pointer">
+                  <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
+                    {artwork.imageUrl ? (
+                      <img
+                        src={artwork.imageUrl}
+                        alt={displayTitle}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
+                    )}
+                  </div>
+                  <h2 className="font-medium text-base text-black group-hover:text-gray-600 transition-colors lg:text-sm">
+                    {displayTitle}
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-1 lg:text-xs">
+                    {displayDate ? `${displayDate}` : ""}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+
+          {status !== "Exhausted" && (
+            <div className="mt-12 flex justify-center">
+              <button
+                type="button"
+                onClick={() => loadMore(10)}
+                disabled={status === "LoadingMore"}
+                className="border border-gray-300 px-5 py-2 text-sm font-medium text-black hover:bg-gray-50 disabled:cursor-wait disabled:text-gray-400"
+              >
+                {status === "LoadingMore" ? "Loading..." : "Load more"}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
