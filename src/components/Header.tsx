@@ -62,6 +62,26 @@ export function Header() {
               ARCHIVE
             </Link>
             <Link
+              to="/full"
+              className={`text-xs font-medium transition-colors ${
+                isActive("/full")
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-600 hover:text-black"
+              }`}
+            >
+              FULL
+            </Link>
+            <Link
+              to="/cycle"
+              className={`text-xs font-medium transition-colors ${
+                isActive("/cycle")
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-600 hover:text-black"
+              }`}
+            >
+              CYCLE
+            </Link>
+            <Link
               to="/about"
               className={`text-xs font-medium transition-colors ${
                 isActive("/about")
