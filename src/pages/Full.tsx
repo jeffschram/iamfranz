@@ -29,7 +29,7 @@ export function Full() {
 
   return (
     <div className="fixed inset-0 z-[100] bg-black">
-      <Link to={`/work/${artwork._id}`} className="block w-full h-full">
+      <Link to={`/work/${artwork._id}`}tai className="block w-full h-full cursor-none">
         {artwork.imageUrl ? (
           <img
             src={artwork.imageUrl}
