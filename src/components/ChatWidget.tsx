@@ -326,10 +326,12 @@ export function ChatWidget() {
             onChange={(event) => setDraft(event.target.value)}
             onKeyDown={onInputKeyDown}
             rows={2}
+            // 16px on phones: iOS Safari zooms the whole page in when a
+            // focused field's text is smaller than that.
             placeholder="Ask about the work…"
             aria-describedby="chat-note"
             aria-invalid={overLimit || undefined}
-            className="min-h-[2.75rem] flex-1 resize-none rounded-md border border-gray-300 px-3 py-2 text-sm text-black placeholder:text-gray-500 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+            className="min-h-[2.75rem] flex-1 resize-none rounded-md border border-gray-300 px-3 py-2 text-base text-black placeholder:text-gray-500 sm:text-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
           />
           <button
             type="submit"
