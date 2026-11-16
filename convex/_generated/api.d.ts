@@ -10,6 +10,9 @@
 
 import type * as artworks from "../artworks.js";
 import type * as auth from "../auth.js";
+import type * as chat from "../chat.js";
+import type * as chatPrompt from "../chatPrompt.js";
+import type * as crons from "../crons.js";
 import type * as http from "../http.js";
 import type * as router from "../router.js";
 
@@ -22,6 +25,9 @@ import type {
 declare const fullApi: ApiFromModules<{
   artworks: typeof artworks;
   auth: typeof auth;
+  chat: typeof chat;
+  chatPrompt: typeof chatPrompt;
+  crons: typeof crons;
   http: typeof http;
   router: typeof router;
 }>;

@@ -105,6 +105,18 @@ function parseLastEvolutionEntry(text) {
   return ('## Iteration ' + sections[sections.length - 1]).trim();
 }
 
+/**
+ * Extract the last ## Iteration N section from a running inspiration-log.md.
+ * The running log is now ~900KB; sending the whole thing pushed the featured
+ * artwork document to the edge of Convex's 1MB per-document limit. The site
+ * only ever shows the entry for the current piece, so send only that.
+ */
+function parseLastInspirationEntry(text) {
+  const sections = text.split(/^## Iteration /m).filter(Boolean);
+  if (!sections.length) return text.trim() || null;
+  return ('## Iteration ' + sections[sections.length - 1]).trim();
+}
+
 /** Upload a PNG/JPG to Convex storage. Returns the storageId. */
 async function uploadImage(filePath) {
   const bytes = await fs.readFile(filePath);
@@ -179,7 +191,7 @@ for (const folder of archiveFolders) {
   const artistThinking = notesContent.trim() || undefined;
   const statement = statementContent.trim() || undefined;
   const artistMission = missionContent.trim() || undefined;
-  const inspirationEntry = inspirationContent.trim() || undefined;
+  const inspirationEntry = parseLastInspirationEntry(inspirationContent) || undefined;
   const evolutionEntry = parseLastEvolutionEntry(evolutionLogContent) || undefined;
   const sortOrder = folderToEpoch(folder);
 
@@ -236,7 +248,7 @@ if (latestHasImage && latestHasDesc) {
   const artistThinking = notesContent.trim() || undefined;
   const statement = statementContent.trim() || undefined;
   const artistMission = missionContent.trim() || undefined;
-  const inspirationEntry = inspirationContent.trim() || undefined;
+  const inspirationEntry = parseLastInspirationEntry(inspirationContent) || undefined;
   const evolutionEntry = parseLastEvolutionEntry(evolutionLogContent) || undefined;
 
   const sortOrder = Date.now(); // latest always gets the newest sort order
@@ -245,12 +257,11 @@ if (latestHasImage && latestHasDesc) {
   console.log(`🔄  latest/ → "${title}" (${existingLatestId ? 'update' : 'create'})`);
 
   if (!dryRun) {
-    // Un-feature everything first
-    const existing = await client.query(api.artworks.list, {});
+    // Un-feature everything first (use indexed getFeatured to avoid the 16MB
+    // read limit that artworks.list hits once the gallery grows large)
+    const existing = await client.query(api.artworks.getFeatured, {});
     for (const artwork of existing) {
-      if (artwork.featured) {
-        await client.mutation(api.artworks.update, { id: artwork._id, featured: false });
-      }
+      await client.mutation(api.artworks.update, { id: artwork._id, featured: false });
     }
 
     const storageId = await uploadImage(path.join(latestDir, 'artwork.png'));
@@ -302,6 +313,16 @@ if (latestHasImage && latestHasDesc) {
   }
 } else {
   console.log('⚠  latest/ has no artwork.png or description.md — skipping');
+}
+
+// ── publish the artist's principles for "Chat with the Artist" ────────────
+// Kept in its own module and wrapped so that nothing here can fail the sync.
+
+try {
+  const { syncArtistContext } = await import('./syncArtistContext.mjs');
+  await syncArtistContext({ client, latestDir, dryRun });
+} catch (error) {
+  console.warn(`⚠  Could not publish aesthetic principles for chat (sync otherwise fine): ${error?.message ?? error}`);
 }
 
 // ── save sync state ────────────────────────────────────────────────────────

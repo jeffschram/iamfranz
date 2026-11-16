@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { Header } from "./components/Header";
+import { ChatWidget } from "./components/ChatWidget";
 import { Home } from "./pages/Home";
 import { Full } from "./pages/Full";
 import { Cycle } from "./pages/Cycle";
@@ -15,6 +16,8 @@ import { HowItWorks } from "./pages/HowItWorks";
 function AppShell() {
   const location = useLocation();
   const isCyclePage = location.pathname === "/cycle";
+  // /cycle and /full are full-screen display modes with no site chrome.
+  const isDisplayPage = isCyclePage || location.pathname === "/full";
 
   return (
     <div className={isCyclePage ? "min-h-screen bg-black" : "min-h-screen bg-white"}>
@@ -34,6 +37,8 @@ function AppShell() {
           <Route path="/how-it-works" element={<HowItWorks />} />
         </Routes>
       </main>
+      {/* Outside <Routes> so the conversation stays open across pages. */}
+      {!isDisplayPage && <ChatWidget />}
       <Toaster />
     </div>
   );
