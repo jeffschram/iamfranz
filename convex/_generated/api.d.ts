@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as artworkDigest from "../artworkDigest.js";
 import type * as artworks from "../artworks.js";
 import type * as auth from "../auth.js";
 import type * as chat from "../chat.js";
@@ -23,6 +24,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  artworkDigest: typeof artworkDigest;
   artworks: typeof artworks;
   auth: typeof auth;
   chat: typeof chat;

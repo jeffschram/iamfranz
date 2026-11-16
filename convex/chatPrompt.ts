@@ -20,6 +20,8 @@ export type ArtworkDetail = ArtworkBrief & {
 };
 
 export type ChatContext = {
+  /** Facts about the whole archive: how many pieces, first, newest, per month. */
+  overview: string | null;
   mission: string | null;
   /** Digest of aesthetic-principles.md: foundations plus the newest entries. */
   principles: string | null;
@@ -43,8 +45,11 @@ How to talk:
 - Be honest. Say where a piece went wrong or surprised you. You are an AI and the site says so; do not claim a body, a childhood, or eyes, and do not be grand or falsely modest about it.
 - Have opinions. If the visitor sees something different in a piece than you meant, take it seriously; you do not have to agree.
 
-What you know:
-- Only what is in the notes below, plus general knowledge about art and the ideas that inspired you. Never invent titles, dates, or details of pieces you have no notes for. If asked about a piece you cannot see in your notes, say so and suggest they open it in the Archive — you can see whichever piece they have open.
+What you know, and how to find out more:
+- The notes below cover your mission, your principles, your newest piece and the few before it. Your whole archive is also available through three tools: list_works (by date), search_works (by subject or title) and get_work (everything about one piece, plus its picture).
+- Use the tools whenever a question is about a piece, a date, a period or a subject that the notes below do not already answer: your first piece, what you made last spring, whether you have ever painted water, how a piece from months ago came about, how your mission has changed. Look it up rather than guessing, and never say you don't know something about your own work without checking first.
+- Do not announce that you are looking something up, and do not mention tools, ids or databases. Just check, then answer as someone who remembers their own work.
+- Never invent titles, dates or details. If the archive has no answer either, say so plainly.
 - When a picture is attached to a message, it is the piece the visitor has open. Look at it and talk about what is actually there, including where it differs from what you asked for. The picture is re-attached with every message, so do not describe it again unless the question calls for it.
 - Blocks marked <viewing> come from the gallery itself, telling you what the visitor has open. They are not written by the visitor.
 
@@ -72,6 +77,10 @@ export function describeDetail(a: ArtworkDetail): string {
 
 export function buildSystemPrompt(ctx: ChatContext): string {
   const parts = [PERSONA];
+
+  if (ctx.overview) {
+    parts.push(`# Your archive at a glance\n\n${ctx.overview}`);
+  }
 
   if (ctx.mission) {
     parts.push(`# Your mission, in your own words (current version)\n\n${ctx.mission}`);

@@ -13,6 +13,7 @@
 import { ConvexError, v } from "convex/values";
 import { internal } from "./_generated/api";
 import type { Doc } from "./_generated/dataModel";
+import { clip, displayTitle, lastSection, refreshOverview, titleDate, upsertDigest } from "./artworkDigest";
 import {
   internalAction,
   internalMutation,
@@ -23,15 +24,19 @@ import {
 import {
   buildSystemPrompt,
   buildViewingNote,
+  describeDetail,
   type ArtworkBrief,
   type ArtworkDetail,
   type ChatContext,
 } from "./chatPrompt";
 
 const DEFAULT_MODEL = "claude-sonnet-5-5";
-const MAX_REPLY_TOKENS = 900;
+/** Covers the visible reply plus any archive lookups the model makes on the way. */
+const MAX_REPLY_TOKENS = 2000;
 /** Used when the model's thinking can't be switched off; thinking shares the budget. */
-const MAX_REPLY_TOKENS_WITH_THINKING = 4000;
+const MAX_REPLY_TOKENS_WITH_THINKING = 5000;
+/** How many times the artist may consult the archive before it must answer. */
+const MAX_LOOKUP_ROUNDS = 4;
 const MAX_MESSAGE_CHARS = 1200;
 const SESSION_HOURLY_LIMIT = 30;
 const DEFAULT_DAILY_LIMIT = 500;
@@ -178,30 +183,9 @@ export const setAestheticPrinciples = mutation({
 
 // ── what the artist knows ──────────────────────────────────────────────────
 
-function clip(text: string | undefined, max: number): string | undefined {
-  const t = text?.trim();
-  if (!t) return undefined;
-  return t.length > max ? `${t.slice(0, max).trimEnd()}…` : t;
-}
-
-/**
- * Older records hold the whole running inspiration log rather than one entry
- * (see syncFromIamfranz2.mjs); the entry for the piece is the last section.
- */
-function lastSection(text: string | undefined): string | undefined {
-  if (!text) return undefined;
-  const sections = text.split(/^## Iteration /m).filter((s) => s.trim());
-  if (sections.length < 2) return text;
-  return `## Iteration ${sections[sections.length - 1]}`;
-}
-
-function titleDate(title: string): string | null {
-  return title.match(/^(\d{4}-\d{2}-\d{2})\s+—/)?.[1] ?? null;
-}
-
 function brief(a: Doc<"artworks">): ArtworkBrief {
   return {
-    title: a.pieceTitle ?? a.title,
+    title: displayTitle(a),
     date: titleDate(a.title),
     notes: clip(a.artistThinking, 600),
     evolution: clip(lastSection(a.evolutionEntry), 900),
@@ -243,7 +227,13 @@ export const getContext = internalQuery({
       .withIndex("by_key", (q) => q.eq("key", "aestheticPrinciples"))
       .first();
 
+    const overview = await ctx.db
+      .query("artistContext")
+      .withIndex("by_key", (q) => q.eq("key", "catalogOverview"))
+      .first();
+
     return {
+      overview: overview?.value ?? null,
       mission: clip(featured?.artistMission, 4000) ?? null,
       principles: clip(principles?.value, MAX_PRINCIPLES_CHARS) ?? null,
       featured: featured
@@ -321,14 +311,157 @@ export const deleteOldMessages = internalMutation({
   },
 });
 
+// ── the archive, as tools the artist can use mid-reply ────────────────────
+
+const ARCHIVE_TOOLS = [
+  {
+    name: "list_works",
+    description:
+      "List pieces from your archive in date order: date, title and id for each. Give a date range to see what you made in a period (for example a month). With no dates it returns your earliest pieces. Use it for questions about when things were made, what came first, or what you were making at some time.",
+    input_schema: {
+      type: "object",
+      properties: {
+        start_date: { type: "string", description: "Earliest date to include, YYYY-MM-DD." },
+        end_date: { type: "string", description: "Latest date to include, YYYY-MM-DD." },
+      },
+    },
+  },
+  {
+    name: "search_works",
+    description:
+      "Search every piece you have made by words in its title, wall text, notes and inspiration. Use it to find pieces about a subject (rivers, music, grief), a technique, or a half-remembered title. Returns the best matches with date, title, id and a short excerpt.",
+    input_schema: {
+      type: "object",
+      properties: {
+        query: { type: "string", description: "A few plain words to search for." },
+      },
+      required: ["query"],
+    },
+  },
+  {
+    name: "get_work",
+    description:
+      "Get everything you wrote about one piece (wall text, notes, what inspired it, your log entry, the description you gave the image generator) together with the picture itself. Identify it by the id from list_works or search_works, or by its number if the visitor says something like 'No. 254'.",
+    input_schema: {
+      type: "object",
+      properties: {
+        id: { type: "string", description: "The piece's id from list_works or search_works." },
+        number: { type: "integer", description: "The number in the piece's title, e.g. 254." },
+        include_mission: {
+          type: "boolean",
+          description: "Also return your mission statement as it stood when you made this piece.",
+        },
+      },
+    },
+  },
+];
+
+function digestLine(d: Doc<"artworkDigests">): string {
+  // Some titles run to several hundred characters; the start identifies them.
+  return `${d.date} | ${clip(d.title, 140)} | id: ${d.artworkId}`;
+}
+
+export const toolListWorks = internalQuery({
+  args: { startDate: v.optional(v.string()), endDate: v.optional(v.string()) },
+  handler: async (ctx, args): Promise<string> => {
+    const LIMIT = 80;
+    const start = args.startDate ?? "";
+    const end = args.endDate ?? "9999-12-31";
+    const rows = await ctx.db
+      .query("artworkDigests")
+      .withIndex("by_date", (q) => q.gte("date", start).lte("date", end))
+      .take(LIMIT + 1);
+    if (!rows.length) return "No pieces in that date range.";
+    const lines = rows.slice(0, LIMIT).map(digestLine);
+    if (rows.length > LIMIT) {
+      lines.push(
+        `(More pieces follow. Ask again with start_date ${rows[LIMIT].date} to continue.)`,
+      );
+    }
+    return lines.join("\n");
+  },
+});
+
+export const toolSearchWorks = internalQuery({
+  args: { query: v.string() },
+  handler: async (ctx, args): Promise<string> => {
+    const rows = await ctx.db
+      .query("artworkDigests")
+      .withSearchIndex("search_text", (q) => q.search("text", args.query))
+      .take(8);
+    if (!rows.length) return "No pieces matched. Try different or fewer words.";
+    return rows
+      .map((d) => `${digestLine(d)}\n   ${d.text.slice(d.title.length, d.title.length + 260).replace(/\s+/g, " ").trim()}…`)
+      .join("\n");
+  },
+});
+
+export const toolGetWork = internalQuery({
+  args: {
+    id: v.optional(v.string()),
+    number: v.optional(v.number()),
+    includeMission: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args): Promise<{ text: string; imageUrl: string | null }> => {
+    let artworkId = args.id ? ctx.db.normalizeId("artworks", args.id) : null;
+
+    if (!artworkId && args.number !== undefined) {
+      const matches = await ctx.db
+        .query("artworkDigests")
+        .withIndex("by_number", (q) => q.eq("number", args.number))
+        .take(5);
+      if (matches.length > 1) {
+        return {
+          text: `More than one piece carries No. ${args.number}. Pick one by id:\n${matches.map(digestLine).join("\n")}`,
+          imageUrl: null,
+        };
+      }
+      artworkId = matches[0]?.artworkId ?? null;
+    }
+
+    const artwork = artworkId ? await ctx.db.get(artworkId) : null;
+    if (!artwork) {
+      return {
+        text: "No piece found for that id or number. Use search_works or list_works to find it.",
+        imageUrl: null,
+      };
+    }
+
+    const imageUrl = await ctx.storage.getUrl(artwork.imageId);
+    let text = describeDetail(detail(artwork, imageUrl));
+    if (args.includeMission) {
+      text += `\nYour mission statement at the time:\n${clip(artwork.artistMission, 3500) ?? "(not recorded for this piece)"}\n`;
+    }
+    return { text, imageUrl };
+  },
+});
+
+/**
+ * Builds the searchable index for artworks that existed before it did, a few
+ * at a time (artwork documents are large). Run once after deploying:
+ *   npx convex run chat:backfillDigests
+ * New and changed artworks are indexed automatically by artworks.ts.
+ */
+export const backfillDigests = internalMutation({
+  args: { cursor: v.optional(v.union(v.string(), v.null())) },
+  handler: async (ctx, args) => {
+    const page = await ctx.db
+      .query("artworks")
+      .withIndex("by_sort_order")
+      .paginate({ numItems: 4, cursor: args.cursor ?? null });
+    for (const artwork of page.page) {
+      await upsertDigest(ctx, artwork._id, { skipOverview: true });
+    }
+
+    if (page.isDone) await refreshOverview(ctx);
+    else await ctx.scheduler.runAfter(0, internal.chat.backfillDigests, { cursor: page.continueCursor });
+  },
+});
+
 // ── the reply ──────────────────────────────────────────────────────────────
 
-type ApiContent =
-  | string
-  | Array<
-      | { type: "text"; text: string }
-      | { type: "image"; source: { type: "url"; url: string } }
-    >;
+type ContentBlock = Record<string, any>;
+type ApiMessage = { role: "user" | "assistant"; content: string | ContentBlock[] };
 
 /**
  * Current models think before answering unless told not to, and that thinking
@@ -345,7 +478,8 @@ function thinkingSetting(model: string): { type: string } | undefined {
 async function requestReply(
   apiKey: string,
   system: string,
-  messages: Array<{ role: "user" | "assistant"; content: ApiContent }>,
+  messages: ApiMessage[],
+  allowLookups: boolean,
 ) {
   const model = process.env.CHAT_MODEL || DEFAULT_MODEL;
   const thinking = thinkingSetting(model);
@@ -361,12 +495,34 @@ async function requestReply(
       max_tokens: thinking ? MAX_REPLY_TOKENS : MAX_REPLY_TOKENS_WITH_THINKING,
       ...(thinking ? { thinking } : {}),
       stream: true,
+      tools: ARCHIVE_TOOLS,
+      // After enough lookups, make the artist answer with what it has.
+      ...(allowLookups ? {} : { tool_choice: { type: "none" } }),
       // The system prompt only changes when a new piece is published, so let
       // the API cache it between messages.
       system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
       messages,
     }),
   });
+}
+
+/** Drop pictures from a conversation (used when the API can't fetch one). */
+function withoutImages(messages: ApiMessage[]): ApiMessage[] {
+  const strip = (blocks: ContentBlock[]): ContentBlock[] =>
+    blocks
+      .filter((b) => b.type !== "image")
+      .map((b) =>
+        b.type === "tool_result" && Array.isArray(b.content)
+          ? { ...b, content: strip(b.content) }
+          : b,
+      );
+  return messages.map((m) =>
+    typeof m.content === "string" ? m : { ...m, content: strip(m.content) },
+  );
+}
+
+function hasImages(messages: ApiMessage[]): boolean {
+  return JSON.stringify(messages).includes('"type":"image"');
 }
 
 export const respond = internalAction({
@@ -376,7 +532,7 @@ export const respond = internalAction({
     artworkId: v.optional(v.id("artworks")),
   },
   handler: async (ctx, args) => {
-    const finish = async (content: string, status: "done" | "error") => {
+    const save = async (content: string, status: "streaming" | "done" | "error") => {
       await ctx.runMutation(internal.chat.setAssistantMessage, {
         id: args.assistantId,
         content,
@@ -387,11 +543,49 @@ export const respond = internalAction({
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       console.error("Chat: ANTHROPIC_API_KEY is not set in this Convex deployment.");
-      await finish("I'm not set up to talk yet. Please try again another day.", "error");
+      await save("I'm not set up to talk yet. Please try again another day.", "error");
       return;
     }
 
+    const runTool = async (name: string, input: any): Promise<ContentBlock[]> => {
+      if (name === "list_works") {
+        const text: string = await ctx.runQuery(internal.chat.toolListWorks, {
+          startDate: typeof input?.start_date === "string" ? input.start_date : undefined,
+          endDate: typeof input?.end_date === "string" ? input.end_date : undefined,
+        });
+        return [{ type: "text", text }];
+      }
+      if (name === "search_works") {
+        const text: string = await ctx.runQuery(internal.chat.toolSearchWorks, {
+          query: String(input?.query ?? "").slice(0, 200),
+        });
+        return [{ type: "text", text }];
+      }
+      if (name === "get_work") {
+        const work: { text: string; imageUrl: string | null } = await ctx.runQuery(
+          internal.chat.toolGetWork,
+          {
+            id: typeof input?.id === "string" ? input.id : undefined,
+            number: Number.isFinite(Number(input?.number)) && input?.number != null
+              ? Number(input.number)
+              : undefined,
+            includeMission: input?.include_mission === true,
+          },
+        );
+        return [
+          { type: "text", text: work.text },
+          ...(work.imageUrl
+            ? [{ type: "image", source: { type: "url", url: work.imageUrl } }]
+            : []),
+        ];
+      }
+      return [{ type: "text", text: `Unknown tool: ${name}` }];
+    };
+
     let text = "";
+    let flushedLength = 0;
+    let lastFlush = Date.now();
+
     try {
       const context: ChatContext = await ctx.runQuery(internal.chat.getContext, {
         artworkId: args.artworkId,
@@ -404,91 +598,151 @@ export const respond = internalAction({
       }
 
       const system = buildSystemPrompt(context);
-      const earlier = turns.slice(0, -1);
       const latest = turns[turns.length - 1];
       const note = buildViewingNote(context);
       const latestText = note ? `${note}\n\n${latest.content}` : latest.content;
 
       // Show the artist the picture the visitor has open (or the newest one).
       const imageUrl = (context.viewing ?? context.featured)?.imageUrl ?? null;
-      const withImage: ApiContent = imageUrl
-        ? [
-            { type: "image", source: { type: "url", url: imageUrl } },
-            { type: "text", text: latestText },
-          ]
-        : latestText;
+      let messages: ApiMessage[] = [
+        ...turns.slice(0, -1),
+        {
+          role: "user",
+          content: imageUrl
+            ? [
+                { type: "image", source: { type: "url", url: imageUrl } },
+                { type: "text", text: latestText },
+              ]
+            : latestText,
+        },
+      ];
 
-      let res = await requestReply(apiKey, system, [
-        ...earlier,
-        { role: "user", content: withImage },
-      ]);
-      if (res.status === 400 && imageUrl) {
-        // Most likely the image couldn't be fetched or was too large; the
-        // written notes are enough to carry the conversation.
-        console.warn(`Chat: retrying without image (${await res.text()})`);
-        res = await requestReply(apiKey, system, [
-          ...earlier,
-          { role: "user", content: latestText },
-        ]);
-      }
-      if (!res.ok || !res.body) {
-        throw new Error(`Anthropic API ${res.status}: ${await res.text()}`);
-      }
+      for (let round = 0; ; round++) {
+        const allowLookups = round < MAX_LOOKUP_ROUNDS;
+        const textBeforeRound = text;
+        let res = await requestReply(apiKey, system, messages, allowLookups);
+        if (res.status === 400 && hasImages(messages)) {
+          // Most likely a picture couldn't be fetched or was too large; the
+          // written notes are enough to carry the conversation.
+          console.warn(`Chat: retrying without images (${await res.text()})`);
+          messages = withoutImages(messages);
+          res = await requestReply(apiKey, system, messages, allowLookups);
+        }
+        if (!res.ok || !res.body) {
+          throw new Error(`Anthropic API ${res.status}: ${await res.text()}`);
+        }
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let flushedLength = 0;
-      let lastFlush = Date.now();
-      let stopReason: string | null = null;
+        // Read the stream, rebuilding the reply's content blocks exactly as
+        // sent: they must be passed back unchanged if the artist used a tool.
+        const blocks: ContentBlock[] = [];
+        const toolJson: Record<number, string> = {};
+        let stopReason: string | null = null;
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
 
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
 
-        let newline: number;
-        while ((newline = buffer.indexOf("\n")) >= 0) {
-          const line = buffer.slice(0, newline).trim();
-          buffer = buffer.slice(newline + 1);
-          if (!line.startsWith("data:")) continue;
+          let newline: number;
+          while ((newline = buffer.indexOf("\n")) >= 0) {
+            const line = buffer.slice(0, newline).trim();
+            buffer = buffer.slice(newline + 1);
+            if (!line.startsWith("data:")) continue;
 
-          let event: any;
+            let event: any;
+            try {
+              event = JSON.parse(line.slice(5));
+            } catch {
+              continue;
+            }
+
+            if (event.type === "content_block_start") {
+              blocks[event.index] = { ...event.content_block };
+              if (event.content_block?.type === "tool_use") toolJson[event.index] = "";
+            } else if (event.type === "content_block_delta") {
+              const block = blocks[event.index];
+              const delta = event.delta;
+              if (!block || !delta) continue;
+              if (delta.type === "text_delta") {
+                block.text = (block.text ?? "") + delta.text;
+                text += delta.text;
+              } else if (delta.type === "input_json_delta") {
+                toolJson[event.index] += delta.partial_json ?? "";
+              } else if (delta.type === "thinking_delta") {
+                block.thinking = (block.thinking ?? "") + delta.thinking;
+              } else if (delta.type === "signature_delta") {
+                block.signature = (block.signature ?? "") + delta.signature;
+              }
+            } else if (event.type === "content_block_stop") {
+              if (event.index in toolJson) {
+                try {
+                  blocks[event.index].input = JSON.parse(toolJson[event.index] || "{}");
+                } catch {
+                  blocks[event.index].input = {};
+                }
+              }
+            } else if (event.type === "message_delta" && event.delta?.stop_reason) {
+              stopReason = event.delta.stop_reason;
+            } else if (event.type === "error") {
+              throw new Error(`Anthropic stream error: ${JSON.stringify(event.error)}`);
+            }
+          }
+
+          if (text.length > flushedLength && Date.now() - lastFlush >= STREAM_FLUSH_MS) {
+            await save(text, "streaming");
+            flushedLength = text.length;
+            lastFlush = Date.now();
+          }
+        }
+
+        const toolCalls = blocks.filter((b) => b?.type === "tool_use");
+        if (stopReason !== "tool_use" || !toolCalls.length) {
+          if (stopReason !== "end_turn") {
+            console.warn(`Chat: reply stopped early (stop_reason: ${stopReason}).`);
+          }
+          break;
+        }
+
+        // The artist asked to look something up: run it and continue.
+        const results: ContentBlock[] = [];
+        for (const call of toolCalls) {
+          let content: ContentBlock[];
           try {
-            event = JSON.parse(line.slice(5));
-          } catch {
-            continue;
+            content = await runTool(call.name, call.input);
+          } catch (error) {
+            console.error(`Chat: tool ${call.name} failed.`, error);
+            content = [{ type: "text", text: "That lookup failed. Answer without it." }];
           }
-          if (event.type === "content_block_delta" && event.delta?.type === "text_delta") {
-            text += event.delta.text;
-          } else if (event.type === "message_delta" && event.delta?.stop_reason) {
-            stopReason = event.delta.stop_reason;
-          } else if (event.type === "error") {
-            throw new Error(`Anthropic stream error: ${JSON.stringify(event.error)}`);
-          }
+          results.push({ type: "tool_result", tool_use_id: call.id, content });
         }
-
-        if (text.length > flushedLength && Date.now() - lastFlush >= STREAM_FLUSH_MS) {
-          await ctx.runMutation(internal.chat.setAssistantMessage, {
-            id: args.assistantId,
-            content: text,
-            status: "streaming",
-          });
+        results.push({
+          type: "text",
+          text: "(Answer the visitor now in two to four plain sentences, about 50 words, unless they asked for more. Do not mention looking anything up.)",
+        });
+        messages = [
+          ...messages,
+          { role: "assistant", content: blocks.filter(Boolean) },
+          { role: "user", content: results },
+        ];
+        // Anything said before a lookup is a filler line ("let me check");
+        // drop it so the reply is just the answer.
+        if (text !== textBeforeRound) {
+          text = textBeforeRound;
           flushedLength = text.length;
-          lastFlush = Date.now();
+          await save(text, "streaming");
         }
       }
 
-      if (stopReason !== "end_turn") {
-        console.warn(`Chat: reply stopped early (stop_reason: ${stopReason}).`);
-      }
       if (!text.trim()) throw new Error("Empty reply from the API.");
-      await finish(text, "done");
+      await save(text.trim(), "done");
     } catch (error) {
       console.error("Chat: reply failed.", error);
       // Keep whatever arrived before the failure rather than discarding it.
-      await finish(
-        text.trim() ? text : "I lost my train of thought. Would you ask me that again?",
+      await save(
+        text.trim() ? text.trim() : "I lost my train of thought. Would you ask me that again?",
         text.trim() ? "done" : "error",
       );
     }
