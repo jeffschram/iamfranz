@@ -12,15 +12,16 @@ export function Header() {
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center gap-6 h-16">
           <Link
             to="/"
-            className="text-xl font-semibold tracking-tight text-black"
+            className="shrink-0 text-xl font-semibold tracking-tight text-black"
           >
             IAMFRANZ
           </Link>
 
-          <nav className="flex space-x-6">
+          {/* Scrolls sideways on narrow screens instead of widening the page. */}
+          <nav className="flex min-w-0 space-x-6 overflow-x-auto whitespace-nowrap py-2">
             <Link
               to="/how-it-works"
               className={`text-xs font-medium transition-colors ${
