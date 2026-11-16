@@ -3,6 +3,7 @@ import { query, mutation } from "./_generated/server";
 import type { QueryCtx } from "./_generated/server";
 import type { Doc } from "./_generated/dataModel";
 import { v } from "convex/values";
+import { removeDigest, upsertDigest } from "./artworkDigest";
 
 function orderedArtworks(ctx: QueryCtx) {
   return ctx.db.query("artworks").withIndex("by_sort_order").order("desc");
@@ -175,7 +176,9 @@ export const create = mutation({
     featured: v.boolean(),
   },
   handler: async (ctx, args) => {
-    return await ctx.db.insert("artworks", args);
+    const id = await ctx.db.insert("artworks", args);
+    await upsertDigest(ctx, id); // keep the chat's searchable index current
+    return id;
   },
 });
 
@@ -200,14 +203,18 @@ export const update = mutation({
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args;
-    return await ctx.db.patch(id, updates);
+    await ctx.db.patch(id, updates);
+    await upsertDigest(ctx, id);
+    return null;
   },
 });
 
 export const remove = mutation({
   args: { id: v.id("artworks") },
   handler: async (ctx, args) => {
-    return await ctx.db.delete(args.id);
+    await ctx.db.delete(args.id);
+    await removeDigest(ctx, args.id);
+    return null;
   },
 });
 

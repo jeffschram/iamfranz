@@ -36,8 +36,23 @@ const applicationTables = {
     viewingTitle: v.optional(v.string()),
   }).index("by_session", ["sessionId"]),
 
-  // Things the artist knows that don't belong to any one artwork (currently
-  // just a digest of aesthetic-principles.md), published by the studio sync.
+  // One small, searchable row per artwork for the chat (see artworkDigest.ts).
+  artworkDigests: defineTable({
+    artworkId: v.id("artworks"),
+    title: v.string(),
+    number: v.optional(v.number()),
+    date: v.string(), // YYYY-MM-DD
+    sortOrder: v.number(),
+    text: v.string(),
+  })
+    .index("by_artwork", ["artworkId"])
+    .index("by_number", ["number"])
+    .index("by_date", ["date"])
+    .index("by_sort_order", ["sortOrder"])
+    .searchIndex("search_text", { searchField: "text" }),
+
+  // Things the artist knows that don't belong to any one artwork (a digest of
+  // aesthetic-principles.md from the studio sync, and an overview of the archive).
   artistContext: defineTable({
     key: v.string(),
     value: v.string(),
